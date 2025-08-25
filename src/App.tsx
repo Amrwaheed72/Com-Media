@@ -13,7 +13,7 @@ function App() {
             <Navbar />
             <div>
                 <Toaster richColors closeButton position="bottom-right" />
-                <button
+                {/* <button
                     className="button bg-black p-4"
                     type="button"
                     onClick={() =>
@@ -32,7 +32,7 @@ function App() {
                 >
                     {' '}
                     show toast
-                </button>
+                </button> */}
                 <Routes>
                     <Route path="/" element={<HomePage />}></Route>
                 </Routes>
