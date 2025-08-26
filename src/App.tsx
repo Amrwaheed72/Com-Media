@@ -1,18 +1,20 @@
 import { Route, Routes } from 'react-router';
-import { useCounterStore } from './store/useCounterStore';
-import { toast, Toaster } from 'sonner';
+import { Toaster } from 'sonner';
 import HomePage from './pages/HomePage';
 import Navbar from './ui/Navbar';
+import { useEffect } from 'react';
+import { cleanupAuthListener, initAuthListener } from './store/UserAuth';
 
 function App() {
-    const count = useCounterStore((state) => state.count);
-    const increment = useCounterStore((state) => state.increment);
-    const decrement = useCounterStore((state) => state.decrement);
+    useEffect(() => {
+        initAuthListener();
+        return () => cleanupAuthListener(); // optional cleanup
+    }, []);
     return (
-        <div>
+        <div className="min-h-screen bg-gray-100 pt-20 text-gray-900 transition-opacity duration-700 dark:bg-[rgba(10,10,10,0.8)] dark:text-gray-100">
+            <Toaster richColors closeButton position="bottom-right" />
             <Navbar />
-            <div>
-                <Toaster richColors closeButton position="bottom-right" />
+            <div className="container mx-auto px-4 py-6">
                 {/* <button
                     className="button bg-black p-4"
                     type="button"

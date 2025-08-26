@@ -1,12 +1,6 @@
 import { Moon, Sun } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { useTheme } from '@/components/ui/theme-provider';
 import {
     Tooltip,
@@ -16,10 +10,9 @@ import {
 
 export function ModeToggle() {
     const { theme, setTheme } = useTheme();
-    console.log(theme);
     return (
         <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
                 <Button
                     variant={'outline'}
                     onClick={() =>
