@@ -5,6 +5,7 @@ import Navbar from './ui/Navbar';
 import { useEffect } from 'react';
 import { cleanupAuthListener, initAuthListener } from './store/UserAuth';
 import CreatePostPage from './pages/CreatePostPage';
+import PostPage from './pages/PostPage';
 
 function App() {
     useEffect(() => {
@@ -19,6 +20,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/create" element={<CreatePostPage />} />
+                    <Route path="/post/:postId" element={<PostPage />} />
                 </Routes>
             </div>
         </div>

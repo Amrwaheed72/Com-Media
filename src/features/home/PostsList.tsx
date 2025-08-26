@@ -10,6 +10,7 @@ export interface Post {
     image_url: string;
     content: string;
     created_at: string;
+    avatar_url: string;
 }
 
 const PostsList = () => {

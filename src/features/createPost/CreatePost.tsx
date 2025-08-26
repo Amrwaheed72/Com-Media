@@ -1,21 +1,3 @@
-// const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-// } = useForm<postInputs>();
-
-// const onSubmit = () => {};
-// return (
-//     <form onSubmit={handleSubmit(onSubmit)}>
-//         <input
-//             type="text"
-//             {...register('title', { required: 'a post must have a title' })}
-//         />
-//         {errors.title && (
-//             <p className="text-red-600">{errors.title.message}</p>
-//         )}
-//     </form>
-// );
 import {
     Form,
     FormControl,
@@ -34,15 +16,19 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 import { useState } from 'react';
-import { formSchema } from './formSchema';
+import { formSchema, type postInputs } from './formSchema';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
+import { useUserAuth } from '@/store/UserAuth';
 
 const CreatePost = () => {
+    const user = useUserAuth((state) => state.user);
     const [preview, setPreview] = useState<string | null>(null);
     const { createpost, isCreating } = useCreatePost();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    console.log(user);
+    const avatar_url = user?.user_metadata.avatar_url;
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -53,22 +39,25 @@ const CreatePost = () => {
         },
     });
     // mutation function
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        createpost(values, {
-            onSuccess: () => {
-                toast.success('Post created successfully', {
-                    className: 'bg-gray-900 text-purple-500',
-                });
-                queryClient.invalidateQueries({ queryKey: ['posts'] });
-                form.reset();
-                navigate('/');
-            },
-            onError: () => {
-                toast.error(
-                    'sorry, something went wrong while creating your post, please try again'
-                );
-            },
-        });
+    function onSubmit(values: postInputs) {
+        createpost(
+            { post: values, avatar_url },
+            {
+                onSuccess: () => {
+                    toast.success('Post created successfully', {
+                        className: 'bg-gray-900 text-purple-500',
+                    });
+                    queryClient.invalidateQueries({ queryKey: ['posts'] });
+                    form.reset();
+                    navigate('/');
+                },
+                onError: () => {
+                    toast.error(
+                        'sorry, something went wrong while creating your post, please try again'
+                    );
+                },
+            }
+        );
     }
     return (
         <Form {...form}>

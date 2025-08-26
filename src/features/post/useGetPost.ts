@@ -1,16 +1,16 @@
-import { getPosts } from '@/services/api';
+import { getPostById } from '@/services/api';
 import { useUserAuth } from '@/store/UserAuth';
 import { useQuery } from '@tanstack/react-query';
 
-const useGetPosts = () => {
+const useGetPost = (postId: number) => {
     const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
     const { data, isPending, error, refetch } = useQuery({
-        queryKey: ['posts'],
-        queryFn: getPosts,
+        queryKey: ['post', postId],
+        queryFn: () => getPostById(postId),
         refetchOnWindowFocus: false,
         enabled: isAuthenticated,
     });
     return { data, isPending, error, refetch };
 };
 
-export default useGetPosts;
+export default useGetPost;
