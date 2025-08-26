@@ -24,7 +24,6 @@ const Navbar = () => {
     const signInWithGoogle = useUserAuth((state) => state.signInWithGoogle);
     const signInWithGithub = useUserAuth((state) => state.signInWithGithub);
     const signOut = useUserAuth((state) => state.signOut);
-    console.log(user);
     const userName = user?.user_metadata.user_name || user?.email;
     const baseLink = 'flex justify-center items-center gap-2 transition-colors';
     const normalLink = `text-gray-600 dark:hover:text-white dark:text-gray-300 hover:text-black ${baseLink}`;

@@ -9,11 +9,13 @@ interface UserAuthType {
     signInWithGoogle: () => Promise<void>;
     signInWithGithub: () => Promise<void>;
     signOut: () => Promise<void>;
+    isAuthenticated: boolean;
 }
 
 export const useUserAuth = create<UserAuthType>((set) => ({
     user: null,
     loading: true,
+    isAuthenticated: false,
 
     signInWithGoogle: async () => {
         await supabase.auth.signInWithOAuth({ provider: 'google' });
@@ -37,9 +39,17 @@ export const initAuthListener = () => {
     const { data: subscription } = supabase.auth.onAuthStateChange(
         (_event, session) => {
             if (session?.user) {
-                useUserAuth.setState({ user: session.user, loading: false });
+                useUserAuth.setState({
+                    user: session.user,
+                    loading: false,
+                    isAuthenticated: true,
+                });
             } else {
-                useUserAuth.setState({ user: null, loading: false });
+                useUserAuth.setState({
+                    user: null,
+                    loading: false,
+                    isAuthenticated: false,
+                });
             }
         }
     );

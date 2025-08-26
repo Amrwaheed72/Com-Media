@@ -16,26 +16,6 @@ function App() {
             <Toaster richColors closeButton position="top-right" />
             <Navbar />
             <div className="container mx-auto px-4 py-6">
-                {/* <button
-                    className="button bg-black p-4"
-                    type="button"
-                    onClick={() =>
-                        toast('احا', {
-                            description: 'Amr Waheed Mohamed',
-                            // action: {
-                            //     label: 'undo',
-                            //     onClick: () => console.log('Undo'),
-                            // },
-                            // cancel:{
-                            //   label:'Amr',
-                            //   onClick:()=>console.log('amr')
-                            // }
-                        })
-                    }
-                >
-                    {' '}
-                    show toast
-                </button> */}
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/create" element={<CreatePostPage />} />

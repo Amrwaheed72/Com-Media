@@ -17,3 +17,12 @@ export const createPost = async (post: postInputs) => {
     if (error) throw new Error(error.message);
     return data;
 };
+
+export const getPosts = async () => {
+    let { data: posts, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+    if (error) throw new Error(error.message);
+    return posts;
+};

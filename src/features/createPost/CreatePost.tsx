@@ -35,10 +35,14 @@ import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { formSchema } from './formSchema';
+import { useNavigate } from 'react-router';
+import { useQueryClient } from '@tanstack/react-query';
 
 const CreatePost = () => {
     const [preview, setPreview] = useState<string | null>(null);
     const { createpost, isCreating } = useCreatePost();
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -55,7 +59,9 @@ const CreatePost = () => {
                 toast.success('Post created successfully', {
                     className: 'bg-gray-900 text-purple-500',
                 });
+                queryClient.invalidateQueries({ queryKey: ['posts'] });
                 form.reset();
+                navigate('/');
             },
             onError: () => {
                 toast.error(
