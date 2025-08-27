@@ -27,7 +27,7 @@ const CreatePost = () => {
     const { createpost, isCreating } = useCreatePost();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
-    console.log(user);
+
     const avatar_url = user?.user_metadata.avatar_url;
 
     const form = useForm<z.infer<typeof formSchema>>({

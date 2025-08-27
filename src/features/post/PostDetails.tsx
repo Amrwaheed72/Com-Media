@@ -2,6 +2,7 @@ import { useParams } from 'react-router';
 import useGetPost from './useGetPost';
 import { Spinner } from '@/components/ui/spinner';
 import ErrorFallBack from '@/ui/ErrorFallBack';
+import LikeButton from './LikeButton';
 
 type PostIddd = {
     postId: string;
@@ -44,6 +45,7 @@ const PostDetails = () => {
                     {new Date(created_at).toLocaleTimeString()}
                 </span>
             </p>
+            <LikeButton postId={postId} />
         </div>
     );
 };

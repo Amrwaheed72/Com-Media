@@ -10,7 +10,7 @@ import { ThemeProvider } from './components/ui/theme-provider.tsx';
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            staleTime: 60 * 1000,
+            staleTime: 60 * 1000 * 5,
             refetchOnWindowFocus: false,
         },
     },
