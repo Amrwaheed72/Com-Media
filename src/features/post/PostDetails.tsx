@@ -27,8 +27,8 @@ const PostDetails = () => {
     console.log(data);
     const { title, image_url, content, created_at } = data;
     return (
-        <div className="space-y-6">
-            <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-6xl font-bold text-transparent">
+        <div className="space-y-6 w-full overflow-hidden">
+            <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-4xl md:text-6xl font-bold text-transparent">
                 {title}
             </h2>
             {image_url && (

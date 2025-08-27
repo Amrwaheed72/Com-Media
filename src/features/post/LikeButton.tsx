@@ -17,6 +17,7 @@ export interface votes {
 }
 
 const LikeButton = ({ postId }: Props) => {
+        const user = useUserAuth((state) => state.user);
     const { mutate, isPending } = useMakingVotes(postId);
     const {
         data,
@@ -33,9 +34,8 @@ const LikeButton = ({ postId }: Props) => {
             />
         );
     console.log(data);
-    const likes = data?.filter((like) => like.vote === 1).length;
-    const dislikes = data?.filter((like) => like.vote === -1).length;
-    const user = useUserAuth((state) => state.user);
+    const likes = data?.filter((like) => like.vote === 1).length || 0;
+    const dislikes = data?.filter((like) => like.vote === -1).length || 0;
     const userVote = data?.find((like) => like.user_id === user?.id)?.vote;
     return (
         <div className="flex items-center justify-start gap-2">
