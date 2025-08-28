@@ -21,7 +21,7 @@ import { signUpSchema } from './SignupSchema';
 import { useUserAuth } from '@/store/UserAuth';
 import { FiMessageSquare } from 'react-icons/fi';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 type SignUpSchema = z.infer<typeof signUpSchema>;
 
@@ -40,22 +40,19 @@ const SignUp = () => {
         },
     });
     const navigate = useNavigate();
-
     const onSubmit = async (values: SignUpSchema) => {
-        const { data, error } = await signUp(
+        const {  error } = await signUp(
             values.Email,
             values.password,
             values.username
         );
         if (error) {
-            // show toast or error
             console.error(error.message);
         } else {
             toast.success('Check your inbox to verify your email!');
-            navigate('/verify-email'); // redirect to verify page
+            navigate('/verify-email');
         }
     };
-
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2">
             <div className="mx-auto w-full max-w-xl rounded-2xl border p-8">
@@ -85,7 +82,6 @@ const SignUp = () => {
                                     </FormItem>
                                 )}
                             />
-
                             {/* Email */}
                             <FormField
                                 control={form.control}
@@ -103,7 +99,6 @@ const SignUp = () => {
                                     </FormItem>
                                 )}
                             />
-
                             {/* Phone */}
                             <FormField
                                 control={form.control}
@@ -126,7 +121,6 @@ const SignUp = () => {
                                     </FormItem>
                                 )}
                             />
-
                             {/* Password */}
                             <FormField
                                 control={form.control}
@@ -145,7 +139,6 @@ const SignUp = () => {
                                     </FormItem>
                                 )}
                             />
-
                             {/* Confirm Password */}
                             <FormField
                                 control={form.control}
@@ -164,7 +157,6 @@ const SignUp = () => {
                                     </FormItem>
                                 )}
                             />
-
                             <Button
                                 type="submit"
                                 variant={'outline'}
@@ -175,9 +167,10 @@ const SignUp = () => {
                             </Button>
                         </form>
                     </Form>
-
-                    <p className="text-muted-foreground text-center">or</p>
-
+                    <p className="text-muted-foreground text-center">
+                        or
+                        <span className="inline md:hidden"> sign up with</span>
+                    </p>
                     {/* OAuth buttons */}
                     <div className="flex items-center justify-center gap-4">
                         <Tooltip>
@@ -187,13 +180,14 @@ const SignUp = () => {
                                     variant="outline"
                                     onClick={signInWithGoogle}
                                 >
-                                    <FaGoogle className="mr-2" /> Sign up with
-                                    Google
+                                    <FaGoogle className="mr-2" />
+                                    <span className="hidden md:inline">
+                                        Sign up with Google
+                                    </span>
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>Sign up with Google</TooltipContent>
                         </Tooltip>
-
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Button
@@ -201,12 +195,22 @@ const SignUp = () => {
                                     variant="outline"
                                     onClick={signInWithGithub}
                                 >
-                                    <FaGithub className="mr-2" /> Sign up with
-                                    GitHub
+                                    <FaGithub className="mr-2" />
+                                    <span className="hidden md:inline">
+                                        Sign up with GitHub
+                                    </span>
                                 </Button>
                             </TooltipTrigger>
                             <TooltipContent>Sign up with GitHub</TooltipContent>
                         </Tooltip>
+                    </div>
+                    <div>
+                        <p className="text-muted-foreground text-center">
+                            already have an account?
+                            <span className="transition-colors hover:text-gray-800 dark:hover:text-gray-200">
+                                <Link to={'/login'}> sign in now</Link>
+                            </span>
+                        </p>
                     </div>
                 </div>
             </div>

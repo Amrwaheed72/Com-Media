@@ -24,6 +24,7 @@ import { useUserAuth } from '@/store/UserAuth';
 const Login = () => {
     const signInWithGoogle = useUserAuth((state) => state.signInWithGoogle);
     const signInWithGithub = useUserAuth((state) => state.signInWithGithub);
+    const signInWithPassword = useUserAuth((state) => state.signInWithPassword);
     const form = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -33,7 +34,7 @@ const Login = () => {
     });
 
     const onSubmit = (values: LoginSchema) => {
-        console.log('✅ Submitted:', values);
+        signInWithPassword(values.email, values.password);
     };
 
     return (
@@ -99,7 +100,8 @@ const Login = () => {
                     </div>
 
                     <p className="text-muted-foreground text-center">
-                        or sign in with
+                        or{' '}
+                        <span className="inline md:hidden">sign in with</span>
                     </p>
 
                     {/* OAuth buttons */}

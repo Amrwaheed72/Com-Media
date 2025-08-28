@@ -1,5 +1,4 @@
 import { getPosts } from '@/services/api';
-import { useUserAuth } from '@/store/UserAuth';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetPosts = () => {

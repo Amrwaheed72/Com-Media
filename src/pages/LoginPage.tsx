@@ -4,7 +4,7 @@ import { ModeToggle } from '@/ui/ModeToggle';
 const LoginPage = () => {
     return (
         <div className="pt-20">
-            <ModeToggle />
+            {/* <ModeToggle /> */}
             <Login />
         </div>
     );

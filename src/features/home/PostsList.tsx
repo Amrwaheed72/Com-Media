@@ -3,6 +3,7 @@ import useGetPosts from './useGetPosts';
 import ErrorFallBack from '@/ui/ErrorFallBack';
 import Empty from '@/ui/Empty';
 import PostCard from './PostCard';
+import { useUserAuth } from '@/store/UserAuth';
 
 export interface Post {
     id: number;
@@ -15,7 +16,8 @@ export interface Post {
 
 const PostsList = () => {
     const { data, isPending, error, refetch } = useGetPosts();
-
+    const user = useUserAuth((state) => state.user);
+    console.log(user);
     if (isPending)
         return (
             <div className="flex justify-center">

@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { ModeToggle } from './ModeToggle';
 import {
     DropdownMenu,
@@ -20,10 +20,9 @@ import {
 } from '@/components/ui/tooltip';
 
 const Navbar = () => {
-    const navigate = useNavigate();
     const user = useUserAuth((state) => state.user);
     const signOut = useUserAuth((state) => state.signOut);
-    const userName = user?.user_metadata.user_name || user?.email;
+    // const userName = user?.user_metadata.user_name || user?.email;
     const baseLink = 'flex justify-center items-center gap-2 transition-colors';
     const normalLink = `text-gray-600 dark:hover:text-white dark:text-gray-300 hover:text-black ${baseLink}`;
     const activeLink = `dark:text-white text-black font-medium ${baseLink}`;
