@@ -2,7 +2,8 @@ import { useParams } from 'react-router';
 import useGetPost from './useGetPost';
 import { Spinner } from '@/components/ui/spinner';
 import ErrorFallBack from '@/ui/ErrorFallBack';
-import LikeButton from './LikeButton';
+import Comments from './Comments';
+import VoteButtons from './VoteButtons';
 
 type PostIddd = {
     postId: string;
@@ -27,8 +28,8 @@ const PostDetails = () => {
     console.log(data);
     const { title, image_url, content, created_at } = data;
     return (
-        <div className="space-y-6 w-full overflow-hidden">
-            <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-4xl md:text-6xl font-bold text-transparent">
+        <div className="w-full space-y-6 overflow-hidden">
+            <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-4xl font-bold text-transparent md:text-6xl">
                 {title}
             </h2>
             {image_url && (
@@ -45,7 +46,8 @@ const PostDetails = () => {
                     {new Date(created_at).toLocaleTimeString()}
                 </span>
             </p>
-            <LikeButton postId={postId} />
+            <VoteButtons postId={postId} />
+            <Comments />
         </div>
     );
 };

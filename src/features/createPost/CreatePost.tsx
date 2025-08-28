@@ -17,12 +17,24 @@ import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { formSchema, type postInputs } from './formSchema';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUserAuth } from '@/store/UserAuth';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 const CreatePost = () => {
     const user = useUserAuth((state) => state.user);
+    const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
     const [preview, setPreview] = useState<string | null>(null);
     const { createpost, isCreating } = useCreatePost();
     const navigate = useNavigate();
@@ -174,14 +186,36 @@ const CreatePost = () => {
                         />
                     </div>
                 )}
-                <Button
-                    disabled={isCreating}
-                    type="submit"
-                    className="cursor-pointer bg-purple-500 hover:bg-purple-700"
-                    // variant={'outline'}
-                >
-                    {isCreating ? <Spinner size="sm" /> : 'Create Post'}
-                </Button>
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <Button
+                            disabled={isCreating}
+                            type="submit"
+                            className="cursor-pointer bg-purple-500 hover:bg-purple-700"
+                            // variant={'outline'}
+                        >
+                            {isCreating ? <Spinner size="sm" /> : 'Create Post'}
+                        </Button>
+                    </AlertDialogTrigger>
+                    {!isAuthenticated && (
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                    Login required
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    You must login to be able to create a post
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction>
+                                    <Link to="/login">Login</Link>
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    )}
+                </AlertDialog>
             </form>
         </Form>
     );

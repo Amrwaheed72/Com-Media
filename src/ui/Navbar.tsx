@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import { ModeToggle } from './ModeToggle';
 import {
     DropdownMenu,
@@ -20,9 +20,8 @@ import {
 } from '@/components/ui/tooltip';
 
 const Navbar = () => {
+    const navigate = useNavigate();
     const user = useUserAuth((state) => state.user);
-    const signInWithGoogle = useUserAuth((state) => state.signInWithGoogle);
-    const signInWithGithub = useUserAuth((state) => state.signInWithGithub);
     const signOut = useUserAuth((state) => state.signOut);
     const userName = user?.user_metadata.user_name || user?.email;
     const baseLink = 'flex justify-center items-center gap-2 transition-colors';
@@ -75,12 +74,6 @@ const Navbar = () => {
                             Create Community
                             <UserPlus className="h-4 w-4" />
                         </NavLink>
-                        {/* <Button variant={'outline'} onClick={signInWithGoogle}>
-                            google
-                        </Button> */}
-                        {/* <Button variant={'outline'} onClick={signInWithGithub}>
-                            github
-                        </Button> */}
                         <div className="flex items-center justify-center gap-2">
                             {user ? (
                                 <div className="flex items-center justify-center gap-2">
