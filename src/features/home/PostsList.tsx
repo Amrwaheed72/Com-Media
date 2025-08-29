@@ -3,7 +3,7 @@ import useGetPosts from './useGetPosts';
 import ErrorFallBack from '@/ui/ErrorFallBack';
 import Empty from '@/ui/Empty';
 import PostCard from './PostCard';
-import { useUserAuth } from '@/store/UserAuth';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export interface Post {
     id: number;
@@ -16,7 +16,7 @@ export interface Post {
 
 const PostsList = () => {
     const { data, isPending, error, refetch } = useGetPosts();
-    const user = useUserAuth((state) => state.user);
+
     if (isPending)
         return (
             <div className="flex justify-center">
@@ -34,12 +34,26 @@ const PostsList = () => {
         return (
             <Empty message="No posts to display, try to create one or join community to display their posts" />
         );
+
     return (
-        <div className="flex flex-wrap justify-center gap-6">
-            {data.map((post) => (
-                <PostCard post={post} key={post.id} />
-            ))}
-        </div>
+        <motion.div
+            className="flex flex-wrap justify-center gap-6"
+            initial="hidden"
+            animate="visible"
+            variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                    opacity: 1,
+                    transition: { staggerChildren: 0.15 },
+                },
+            }}
+        >
+            <AnimatePresence>
+                {data.map((post) => (
+                    <PostCard post={post} key={post.id} />
+                ))}
+            </AnimatePresence>
+        </motion.div>
     );
 };
 

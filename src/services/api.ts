@@ -1,4 +1,5 @@
 import type { postInputs } from '@/features/createPost/formSchema';
+import type { CommentInput } from '@/features/post/Comments';
 import { supabase } from '@/supabase';
 
 interface CreatePostArgs {
@@ -82,4 +83,51 @@ export const getVotes = async (postId: number) => {
         .eq('post_id', postId);
     if (error) throw error;
     return votes;
+};
+
+export const getComments = async (postId: number) => {
+    let { data: comments, error } = await supabase
+        .from('comments')
+        .select('*')
+        .eq('post_id', postId)
+        .order('created_at', { ascending: true });
+    if (error) throw error;
+    return comments;
+};
+
+export const createComment = async (
+    comment: CommentInput,
+    postId: number,
+    userId: string,
+    author: string
+) => {
+    if (!userId || !author) throw new Error('you must be logged in to comment');
+
+    const { error } = await supabase.from('comments').insert({
+        post_id: postId,
+        content: comment.content,
+        parent_comment_id: comment.parent_comment_id ?? null,
+        user_id: userId,
+        author: author,
+    });
+
+    if (error) throw error;
+};
+export const createReply = async (
+    reply: CommentInput,
+    postId: number,
+    userId: string,
+    author: string
+) => {
+    if (!userId || !author) throw new Error('you must be logged in to reply');
+
+    const { error } = await supabase.from('comments').insert({
+        post_id: postId,
+        content: reply.content,
+        parent_comment_id: reply.parent_comment_id ?? null,
+        user_id: userId,
+        author,
+    });
+
+    if (error) throw error;
 };

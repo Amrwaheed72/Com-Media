@@ -3,9 +3,11 @@ import type { Post } from './PostsList';
 import useGetVotes from '../post/useGetVotes';
 import { Spinner } from '@/components/ui/spinner';
 import ErrorFallBack from '@/ui/ErrorFallBack';
-import { ThumbsDown, ThumbsUp } from 'lucide-react';
+import { MessageSquare, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import useGetComments from '../post/useGetComments';
+import { motion } from 'framer-motion';
 
 interface Props {
     post: Post;
@@ -14,21 +16,34 @@ interface Props {
 const PostCard = ({ post }: Props) => {
     const { id, title, image_url, avatar_url, created_at } = post;
     const { data, isPending: isLoadingVotes, error, refetch } = useGetVotes(id);
+    const {
+        data: comments,
+        isPending,
+        error: commentsError,
+        refetch: refetchComments,
+    } = useGetComments(id);
 
-    // if (isLoadingVotes) return ;
-    if (error)
+    if (error || commentsError)
         return (
             <ErrorFallBack
-                message="error displaying like and dislikes"
-                onRetry={refetch}
+                message="error displaying votes or comments count"
+                onRetry={refetch || refetchComments}
             />
         );
 
     const likes = data?.filter((like) => like.vote === 1).length || 0;
     const dislikes = data?.filter((like) => like.vote === -1).length || 0;
+    const commentsCount = comments?.length;
 
     return (
-        <div className="group relative">
+        <motion.div
+            layout
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="group relative"
+        >
             <div className="pointer-events-none absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 blur-sm transition duration-300 group-hover:opacity-50" />
 
             <Card className="relative z-10 overflow-hidden transition-colors duration-300">
@@ -56,7 +71,8 @@ const PostCard = ({ post }: Props) => {
                                 className="mx-auto max-h-[150px] w-full rounded-[20px] object-cover"
                             />
                         </div>
-                        {isLoadingVotes ? (
+
+                        {isLoadingVotes && isPending ? (
                             <div className="flex items-center justify-center gap-2">
                                 <Spinner variant="ring" size="md" />
                             </div>
@@ -70,22 +86,39 @@ const PostCard = ({ post }: Props) => {
                                     <ThumbsDown className="mr-1 h-4 w-4" />
                                     {dislikes}
                                 </Button>
+                                <Button variant="ghost" disabled>
+                                    <MessageSquare className="mr-1 h-4 w-4" />
+                                    {commentsCount}
+                                </Button>
                             </div>
                         )}
 
                         {/* Date */}
                         <div className="flex flex-1 items-end justify-end">
-                            <p className="text-muted-foreground text-sm">
-                                {new Date(created_at).toLocaleDateString()},{' '}
-                                <span className="text-xs font-semibold">
-                                    {new Date(created_at).toLocaleTimeString()}
-                                </span>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                {new Date(created_at).toLocaleDateString(
+                                    'en-US',
+                                    {
+                                        month: 'short',
+                                        day: 'numeric',
+                                        year: 'numeric',
+                                    }
+                                )}{' '}
+                                •{' '}
+                                {new Date(created_at).toLocaleTimeString(
+                                    'en-US',
+                                    {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        hour12: true,
+                                    }
+                                )}
                             </p>
                         </div>
                     </CardContent>
                 </Link>
             </Card>
-        </div>
+        </motion.div>
     );
 };
 

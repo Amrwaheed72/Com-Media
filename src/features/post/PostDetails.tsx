@@ -46,7 +46,7 @@ const PostDetails = () => {
                 </span>
             </p>
             <VoteButtons postId={postId} />
-            <Comments />
+            <Comments postId={postId} />
         </div>
     );
 };
