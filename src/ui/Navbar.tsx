@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import { ModeToggle } from './ModeToggle';
 import {
     DropdownMenu,
@@ -27,6 +27,7 @@ const Navbar = () => {
     const normalLink = `text-gray-600 dark:hover:text-white dark:text-gray-300 hover:text-black ${baseLink}`;
     const activeLink = `dark:text-white text-black font-medium ${baseLink}`;
     const userImage = user?.user_metadata.avatar_url;
+    const navigate = useNavigate();
     // console.log(user?.user_metadata.avatar_url);
     return (
         <nav className="fixed top-0 w-full border-b border-white/10 shadow-lg backdrop:blur-lg dark:bg-[rgba(10,10,10,0.8)]">
@@ -99,6 +100,7 @@ const Navbar = () => {
                                             <Button
                                                 variant={'outline'}
                                                 onClick={signOut}
+                                                className="cursor-pointer"
                                             >
                                                 <LogOut />
                                             </Button>
@@ -109,12 +111,14 @@ const Navbar = () => {
                             ) : (
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button variant={'outline'}>
-                                            <Link to={'/login'}>
-                                                {' '}
-                                                <LogIn />
-                                            </Link>
-                                        </Button>
+                                        <Link to={'/login'}>
+                                            <Button
+                                                variant={'outline'}
+                                                className="cursor-pointer"
+                                            >
+                                                Login <LogIn />
+                                            </Button>
+                                        </Link>
                                     </TooltipTrigger>
                                     <TooltipContent>Login</TooltipContent>
                                 </Tooltip>
@@ -138,14 +142,22 @@ const Navbar = () => {
                                 >
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem>
-                                            <NavLink to={'/'}>Home</NavLink>
+                                            <NavLink
+                                                className="w-full"
+                                                to={'/'}
+                                            >
+                                                Home
+                                            </NavLink>
                                             <DropdownMenuShortcut>
                                                 <Home className="h-4 w-4" />
                                             </DropdownMenuShortcut>
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem>
-                                            <NavLink to={'/create'}>
+                                            <NavLink
+                                                className="w-full"
+                                                to={'/create'}
+                                            >
                                                 Create Post
                                             </NavLink>
                                             <DropdownMenuShortcut>
@@ -154,7 +166,10 @@ const Navbar = () => {
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem>
-                                            <NavLink to={'/communities'}>
+                                            <NavLink
+                                                className="w-full"
+                                                to={'/communities'}
+                                            >
                                                 Communities
                                             </NavLink>
                                             <DropdownMenuShortcut>
@@ -163,7 +178,10 @@ const Navbar = () => {
                                         </DropdownMenuItem>
                                         <DropdownMenuSeparator />
                                         <DropdownMenuItem>
-                                            <NavLink to={'/community/create'}>
+                                            <NavLink
+                                                className="w-full"
+                                                to={'/community/create'}
+                                            >
                                                 Create Community
                                             </NavLink>
                                             <DropdownMenuShortcut>
@@ -177,6 +195,7 @@ const Navbar = () => {
                                                     <button
                                                         type="button"
                                                         onClick={signOut}
+                                                        className="w-full cursor-pointer text-start"
                                                     >
                                                         logout
                                                     </button>

@@ -1,4 +1,3 @@
-// useUserAuth.ts
 import { supabase } from '@/supabase';
 import type { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
 import { toast } from 'sonner';
@@ -32,6 +31,7 @@ export const useUserAuth = create<UserAuthType>((set) => ({
     loading: true,
     isAuthenticated: false,
     lastSignupEmail: undefined,
+
     signup: async (email, password, username, phone) => {
         const { data, error } = await supabase.auth.signUp({
             email,
@@ -41,34 +41,41 @@ export const useUserAuth = create<UserAuthType>((set) => ({
                 emailRedirectTo: `${window.location.origin}/auth/callback`,
             },
         });
+
         if (error) {
             toast.error(error.message);
             return { error, data: null };
         }
-        // ✅ No session yet because email not confirmed
+
         if (data.user && !data.session) {
             toast.info('Please verify your email to complete signup.');
             set({ lastSignupEmail: email });
         }
+
         return { data, error: null };
     },
+
     resendConfirmation: async (email: string) => {
         const { data, error } = await supabase.auth.resend({
             type: 'signup',
             email,
         });
+
         if (error) {
             toast.error(error.message);
             return { error };
         }
+
         toast.success('Confirmation email resent!');
         return { data };
     },
+
     signInWithPassword: async (email, password) => {
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
         });
+
         if (error) {
             if (error.message.includes('Email not confirmed')) {
                 toast.error('Please verify your email before logging in.');
@@ -77,17 +84,33 @@ export const useUserAuth = create<UserAuthType>((set) => ({
             }
             return { error, data: null };
         }
+
+        // ✅ Success toast is handled here for direct password login.
+        toast.success('Logged in successfully!');
         return { data, error: null };
     },
+
     signInWithGoogle: async () => {
+        // 🚩 Set a flag in session storage before redirecting.
+        sessionStorage.setItem('oauth_provider', 'Google');
         await supabase.auth.signInWithOAuth({ provider: 'google' });
     },
+
     signInWithGithub: async () => {
+        // 🚩 Set a flag in session storage before redirecting.
+        sessionStorage.setItem('oauth_provider', 'GitHub');
         await supabase.auth.signInWithOAuth({ provider: 'github' });
     },
+
     signOut: async () => {
         const { error } = await supabase.auth.signOut();
-        if (error) console.error(error);
+        if (error) {
+            toast.error(error.message);
+            console.error(error);
+        } else {
+            // ✅ Success toast is handled here for direct logout.
+            toast('You have logged out.');
+        }
         set({ user: null, isAuthenticated: false });
     },
 }));
@@ -100,16 +123,19 @@ export const initAuthListener = () => {
 
     const { data: subscription } = supabase.auth.onAuthStateChange(
         (event: AuthChangeEvent, session: Session | null) => {
-            // ⚙️ Get the state *before* it changes
-            const previousUser = useUserAuth.getState().user;
             if (session?.user) {
                 useUserAuth.setState({
                     user: session.user,
                     loading: false,
                     isAuthenticated: true,
                 });
-                if (event === 'SIGNED_IN' && !previousUser) {
-                    toast.success('Logged in successfully!');
+
+                // ✨ Special check for OAuth success after redirect.
+                const provider = sessionStorage.getItem('oauth_provider');
+                if (event === 'SIGNED_IN' && provider) {
+                    toast.success(`Logged in with ${provider} successfully!`);
+                    // 🧹 Clean up the flag so it doesn't run again.
+                    sessionStorage.removeItem('oauth_provider');
                 }
             } else {
                 useUserAuth.setState({
@@ -117,9 +143,6 @@ export const initAuthListener = () => {
                     loading: false,
                     isAuthenticated: false,
                 });
-                if (event === 'SIGNED_OUT') {
-                    toast('You have logged out.');
-                }
             }
         }
     );

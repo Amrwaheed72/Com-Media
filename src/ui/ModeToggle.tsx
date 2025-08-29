@@ -18,6 +18,7 @@ export function ModeToggle() {
                     onClick={() =>
                         setTheme(theme === 'light' ? 'dark' : 'light')
                     }
+                    className="cursor-pointer"
                 >
                     {theme === 'light' ? <Sun /> : <Moon />}
                 </Button>

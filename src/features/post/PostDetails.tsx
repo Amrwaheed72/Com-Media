@@ -25,7 +25,6 @@ const PostDetails = () => {
                 onRetry={refetch}
             />
         );
-    console.log(data);
     const { title, image_url, content, created_at } = data;
     return (
         <div className="w-full space-y-6 overflow-hidden">

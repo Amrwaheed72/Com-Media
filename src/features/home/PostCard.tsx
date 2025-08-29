@@ -15,7 +15,7 @@ const PostCard = ({ post }: Props) => {
     const { id, title, image_url, avatar_url, created_at } = post;
     const { data, isPending: isLoadingVotes, error, refetch } = useGetVotes(id);
 
-    if (isLoadingVotes) return <Spinner variant="ring" size="md" />;
+    // if (isLoadingVotes) return ;
     if (error)
         return (
             <ErrorFallBack
@@ -56,17 +56,22 @@ const PostCard = ({ post }: Props) => {
                                 className="mx-auto max-h-[150px] w-full rounded-[20px] object-cover"
                             />
                         </div>
-
-                        <div className="flex items-center justify-center gap-2">
-                            <Button variant="ghost" disabled>
-                                <ThumbsUp className="mr-1 h-4 w-4" />
-                                {likes}
-                            </Button>
-                            <Button variant="ghost" disabled>
-                                <ThumbsDown className="mr-1 h-4 w-4" />
-                                {dislikes}
-                            </Button>
-                        </div>
+                        {isLoadingVotes ? (
+                            <div className="flex items-center justify-center gap-2">
+                                <Spinner variant="ring" size="md" />
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center gap-2">
+                                <Button variant="ghost" disabled>
+                                    <ThumbsUp className="mr-1 h-4 w-4" />
+                                    {likes}
+                                </Button>
+                                <Button variant="ghost" disabled>
+                                    <ThumbsDown className="mr-1 h-4 w-4" />
+                                    {dislikes}
+                                </Button>
+                            </div>
+                        )}
 
                         {/* Date */}
                         <div className="flex flex-1 items-end justify-end">

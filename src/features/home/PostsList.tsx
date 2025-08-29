@@ -17,7 +17,6 @@ export interface Post {
 const PostsList = () => {
     const { data, isPending, error, refetch } = useGetPosts();
     const user = useUserAuth((state) => state.user);
-    console.log(user);
     if (isPending)
         return (
             <div className="flex justify-center">
@@ -35,7 +34,6 @@ const PostsList = () => {
         return (
             <Empty message="No posts to display, try to create one or join community to display their posts" />
         );
-    console.log(data);
     return (
         <div className="flex flex-wrap justify-center gap-6">
             {data.map((post) => (
