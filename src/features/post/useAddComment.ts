@@ -11,11 +11,14 @@ interface AddCommentArgs {
 const useAddComment = () => {
     const user = useUserAuth((state) => state.user);
     const userId = user?.id;
-    const author = user?.user_metadata.user_name;
+    const author =
+        user?.user_metadata?.full_name ?? user?.user_metadata?.user_name;
 
     const { mutate, isPending } = useMutation({
-        mutationFn: async ({ comment, postId }: AddCommentArgs) => {
-            if (!userId || !author) throw new Error('Not logged in');
+        mutationFn: ({ comment, postId }: AddCommentArgs) => {
+            if (!userId || !author) {
+                throw new Error('User must be logged in to comment');
+            }
             return createComment(comment, postId, userId, author);
         },
     });

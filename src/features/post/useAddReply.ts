@@ -11,7 +11,8 @@ interface AddReplyArgs {
 const useAddReply = (parentCommentId: number) => {
     const user = useUserAuth((state) => state.user);
     const userId = user?.id;
-    const author = user?.user_metadata.user_name;
+    const author =
+        user?.user_metadata.full_name ?? user?.user_metadata?.user_name;
 
     const { mutate, isPending } = useMutation({
         mutationFn: async ({ reply, postId }: AddReplyArgs) => {
