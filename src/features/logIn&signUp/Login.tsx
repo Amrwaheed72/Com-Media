@@ -18,13 +18,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import { loginSchema, type LoginSchema } from './loginSchema';
 import { FiMessageSquare } from 'react-icons/fi';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useUserAuth } from '@/store/UserAuth';
+import { useEffect } from 'react';
 
 const Login = () => {
     const signInWithGoogle = useUserAuth((state) => state.signInWithGoogle);
     const signInWithGithub = useUserAuth((state) => state.signInWithGithub);
     const signInWithPassword = useUserAuth((state) => state.signInWithPassword);
+    const navigate=useNavigate()
     const form = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -33,8 +35,20 @@ const Login = () => {
         },
     });
 
-    const onSubmit = (values: LoginSchema) => {
-        signInWithPassword(values.email, values.password);
+    
+const { isAuthenticated } = useUserAuth();
+
+useEffect(() => {
+  if (isAuthenticated) {
+    navigate("/");
+  }
+}, [isAuthenticated, navigate]);
+
+    const onSubmit = async (values: LoginSchema) => {
+        const { error } = await signInWithPassword(values.email, values.password);
+        if (!error) {
+            navigate('/');
+        }
     };
 
     return (
