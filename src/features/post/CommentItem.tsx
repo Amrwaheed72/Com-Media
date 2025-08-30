@@ -39,10 +39,7 @@ const CommentItem = ({ comment, postId }: Props) => {
         defaultValues: { content: '' },
     });
 
-    const { mutate, isPending: isCreatingReply } = useAddReply(
-        comment.id,
-        postId
-    );
+    const { mutate, isPending: isCreatingReply } = useAddReply(comment.id);
 
     const onSubmit = (values: z.infer<typeof replySchema>) => {
         mutate(

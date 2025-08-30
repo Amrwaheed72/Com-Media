@@ -8,6 +8,10 @@ const VerifyEmail = () => {
     const resendConfirmation = useUserAuth((state) => state.resendConfirmation);
     const email = useUserAuth((state) => state.lastSignupEmail);
     const handleResend = async () => {
+        if (!email) {
+            toast.error('No email found to resend confirmation.');
+            return;
+        }
         setResending(true);
         const { error } = await resendConfirmation(email);
         if (!error) toast.success('Confirmation email sent!');

@@ -14,7 +14,23 @@ import { Spinner } from '@/components/ui/spinner';
 import { useUserAuth } from '@/store/UserAuth';
 import { Link } from 'react-router';
 
-const LoginAlert = ({ isCreating, isDirty, message, size, label }) => {
+type ButtonSize = React.ComponentProps<typeof Button>['size'];
+
+interface LoginAlertProps {
+    isCreating: boolean;
+    isDirty: boolean;
+    message: string;
+    size?: ButtonSize; // "default" | "sm" | "lg" | "icon" | null | undefined
+    label: string;
+}
+
+const LoginAlert: React.FC<LoginAlertProps> = ({
+    isCreating,
+    isDirty,
+    message,
+    size = 'default',
+    label,
+}) => {
     const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
 
     return (

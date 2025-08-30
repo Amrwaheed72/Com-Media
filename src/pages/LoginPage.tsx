@@ -5,7 +5,6 @@ import {
     TooltipTrigger,
 } from '@/components/ui/tooltip';
 import Login from '@/features/logIn&signUp/Login';
-import { ModeToggle } from '@/ui/ModeToggle';
 import { MoveLeft } from 'lucide-react';
 import { useNavigate } from 'react-router';
 

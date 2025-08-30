@@ -8,7 +8,7 @@ interface AddReplyArgs {
     postId: number;
 }
 
-const useAddReply = (parentCommentId: number, postId: number) => {
+const useAddReply = (parentCommentId: number) => {
     const user = useUserAuth((state) => state.user);
     const userId = user?.id;
     const author = user?.user_metadata.user_name;

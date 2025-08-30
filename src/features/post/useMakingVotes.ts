@@ -9,6 +9,7 @@ const useMakingVotes = (postId: number) => {
 
     const { mutate, isPending } = useMutation({
         mutationFn: async (voteValue: number) => {
+            if (!user?.id) throw new Error('Not logged in');
             vote(voteValue, postId, user.id);
         },
         onSuccess: () => {
