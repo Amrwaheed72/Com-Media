@@ -22,10 +22,15 @@ import { useUserAuth } from '@/store/UserAuth';
 import { FiMessageSquare } from 'react-icons/fi';
 import { toast } from 'sonner';
 import { Link, useNavigate } from 'react-router';
+import { Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
 
 type SignUpSchema = z.infer<typeof signUpSchema>;
 
 const SignUp = () => {
+    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible2, setIsVisible2] = useState(false);
+
     const signUp = useUserAuth((state) => state.signup);
     const signInWithGoogle = useUserAuth((state) => state.signInWithGoogle);
     const signInWithGithub = useUserAuth((state) => state.signInWithGithub);
@@ -41,7 +46,7 @@ const SignUp = () => {
     });
     const navigate = useNavigate();
     const onSubmit = async (values: SignUpSchema) => {
-        const {  error } = await signUp(
+        const { error } = await signUp(
             values.Email,
             values.password,
             values.username
@@ -106,7 +111,7 @@ const SignUp = () => {
                                 render={({ field }) => (
                                     <FormItem className="space-y-1">
                                         <FormLabel>
-                                            Phone Number{' '}
+                                            Phone Number
                                             <span className="text-gray-400">
                                                 (optional)
                                             </span>
@@ -126,15 +131,44 @@ const SignUp = () => {
                                 control={form.control}
                                 name="password"
                                 render={({ field }) => (
-                                    <FormItem className="space-y-1">
+                                    <FormItem className="relative space-y-1">
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
                                             <Input
-                                                type="password"
+                                                type={
+                                                    isVisible
+                                                        ? 'text'
+                                                        : 'password'
+                                                }
                                                 placeholder="••••••••"
                                                 {...field}
                                             />
                                         </FormControl>
+                                        {form.formState.isDirty && (
+                                            <div>
+                                                {isVisible ? (
+                                                    <EyeOff
+                                                        size={20}
+                                                        className="absolute top-[50%] right-2 cursor-pointer"
+                                                        onClick={() =>
+                                                            setIsVisible(
+                                                                (prev) => !prev
+                                                            )
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <Eye
+                                                        size={20}
+                                                        className="absolute top-[50%] right-2 cursor-pointer"
+                                                        onClick={() =>
+                                                            setIsVisible(
+                                                                (prev) => !prev
+                                                            )
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
+                                        )}
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -144,15 +178,45 @@ const SignUp = () => {
                                 control={form.control}
                                 name="confirmPassword"
                                 render={({ field }) => (
-                                    <FormItem className="space-y-1">
+                                    <FormItem className="relative space-y-1">
                                         <FormLabel>Repeat Password</FormLabel>
                                         <FormControl>
                                             <Input
-                                                type="password"
+                                                type={
+                                                    isVisible2
+                                                        ? 'text'
+                                                        : 'password'
+                                                }
                                                 placeholder="••••••••"
                                                 {...field}
                                             />
                                         </FormControl>
+                                        {form.formState.dirtyFields
+                                            .confirmPassword && (
+                                            <div>
+                                                {isVisible2 ? (
+                                                    <EyeOff
+                                                        size={20}
+                                                        className="absolute top-[50%] right-2 cursor-pointer"
+                                                        onClick={() =>
+                                                            setIsVisible2(
+                                                                (prev) => !prev
+                                                            )
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <Eye
+                                                        size={20}
+                                                        className="absolute top-[50%] right-2 cursor-pointer"
+                                                        onClick={() =>
+                                                            setIsVisible2(
+                                                                (prev) => !prev
+                                                            )
+                                                        }
+                                                    />
+                                                )}
+                                            </div>
+                                        )}
                                         <FormMessage />
                                     </FormItem>
                                 )}

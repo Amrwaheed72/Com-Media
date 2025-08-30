@@ -20,13 +20,15 @@ import { loginSchema, type LoginSchema } from './loginSchema';
 import { FiMessageSquare } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router';
 import { useUserAuth } from '@/store/UserAuth';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
+    const [isVisible, setIsVisible] = useState(false);
     const signInWithGoogle = useUserAuth((state) => state.signInWithGoogle);
     const signInWithGithub = useUserAuth((state) => state.signInWithGithub);
     const signInWithPassword = useUserAuth((state) => state.signInWithPassword);
-    const navigate=useNavigate()
+    const navigate = useNavigate();
     const form = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -35,17 +37,19 @@ const Login = () => {
         },
     });
 
-    
-const { isAuthenticated } = useUserAuth();
+    const { isAuthenticated } = useUserAuth();
 
-useEffect(() => {
-  if (isAuthenticated) {
-    navigate("/");
-  }
-}, [isAuthenticated, navigate]);
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/');
+        }
+    }, [isAuthenticated, navigate]);
 
     const onSubmit = async (values: LoginSchema) => {
-        const { error } = await signInWithPassword(values.email, values.password);
+        const { error } = await signInWithPassword(
+            values.email,
+            values.password
+        );
         if (!error) {
             navigate('/');
         }
@@ -88,14 +92,46 @@ useEffect(() => {
                                     control={form.control}
                                     name="password"
                                     render={({ field }) => (
-                                        <FormItem className="space-y-1">
+                                        <FormItem className="relative space-y-1">
                                             <FormLabel>Password</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    type="password"
+                                                    type={
+                                                        isVisible
+                                                            ? 'text'
+                                                            : 'password'
+                                                    }
                                                     {...field}
                                                 />
                                             </FormControl>
+                                            {form.formState.dirtyFields
+                                                .password && (
+                                                <div>
+                                                    {isVisible ? (
+                                                        <EyeOff
+                                                            size={20}
+                                                            className="absolute top-[50%] right-2 cursor-pointer"
+                                                            onClick={() =>
+                                                                setIsVisible(
+                                                                    (prev) =>
+                                                                        !prev
+                                                                )
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        <Eye
+                                                            size={20}
+                                                            className="absolute top-[50%] right-2 cursor-pointer"
+                                                            onClick={() =>
+                                                                setIsVisible(
+                                                                    (prev) =>
+                                                                        !prev
+                                                                )
+                                                            }
+                                                        />
+                                                    )}
+                                                </div>
+                                            )}
                                             <FormMessage />
                                         </FormItem>
                                     )}
