@@ -7,15 +7,32 @@ const AuthCallback = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        supabase.auth.getSession().then(({ data }) => {
+        const handleCallback = async () => {
+            // First, let Supabase handle the URL fragment (?code=...)
+            const { error } = await supabase.auth.exchangeCodeForSession(
+                window.location.href
+            );
+
+            if (error) {
+                console.error('Error exchanging code:', error.message);
+                navigate('/login');
+                return;
+            }
+
+            // Now check if we actually have a session
+            const { data } = await supabase.auth.getSession();
+
             if (data.session) {
-                // user is verified and logged in
+                // User verified + logged in
                 navigate('/');
             } else {
+                // No session, fallback
                 navigate('/login');
             }
-        });
-    }, []);
+        };
+
+        handleCallback();
+    }, [navigate]);
 
     return <Spinner size="lg" variant="ring" />;
 };
