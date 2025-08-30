@@ -24,7 +24,11 @@ const CommunitiesList = () => {
         useGetCommunities(from, to);
 
     if (isPending)
-        return <Spinner className="mx-auto" size="xl" variant="ring" />;
+        return (
+            <div className="flex justify-center">
+                <Spinner size="xl" variant="ring" />
+            </div>
+        );
 
     if (error) {
         return (

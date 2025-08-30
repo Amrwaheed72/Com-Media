@@ -47,7 +47,7 @@ const PostCard = ({ post }: Props) => {
         >
             <div className="pointer-events-none absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 blur-sm transition duration-300 group-hover:opacity-50" />
 
-            <Card className="relative z-10 min-w-[340px] overflow-hidden transition-colors duration-300">
+            <Card className="relative z-10 min-w-[340px] overflow-hidden">
                 <Link to={`/post/${id}`} className="block">
                     <CardContent className="flex flex-col gap-5 p-5 px-8">
                         <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ const PostCard = ({ post }: Props) => {
 
                         {isLoadingVotes && isPending ? (
                             <div className="flex items-center justify-center gap-2">
-                                <Spinner variant="ring" size="md" />
+                                <Spinner variant="ring" size="sm" />
                             </div>
                         ) : (
                             <div className="flex items-center justify-center gap-2">

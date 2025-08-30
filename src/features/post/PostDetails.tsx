@@ -28,14 +28,14 @@ const PostDetails = () => {
     const { title, image_url, content, created_at } = data;
     return (
         <div className="w-full space-y-6 overflow-hidden">
-            <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-4xl font-bold text-transparent md:text-6xl">
+            <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-start text-4xl font-bold text-transparent md:text-6xl">
                 {title}
             </h2>
             {image_url && (
                 <img
                     src={image_url}
                     alt={title}
-                    className="mt-4 h-64 w-full rounded object-cover"
+                    className="mt-4 h-128 w-full max-w-xl rounded-3xl object-cover"
                 />
             )}
             <p className="text-gray-400">{content}</p>

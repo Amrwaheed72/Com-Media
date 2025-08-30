@@ -16,20 +16,10 @@ import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { formSchema, type PostInputs } from './formSchema';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { useUserAuth } from '@/store/UserAuth';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
+
 import {
     Select,
     SelectContent,
@@ -38,10 +28,10 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import useGetCommunityName from '../communities/useGetCommunityName';
+import LoginAlert from '@/ui/LoginAlert';
 
 const CreatePost = () => {
     const user = useUserAuth((state) => state.user);
-    const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
     const [preview, setPreview] = useState<string | null>(null);
     const { createpost, isCreating } = useCreatePost();
     const { communities, isPending, error } = useGetCommunityName();
@@ -56,12 +46,12 @@ const CreatePost = () => {
             title: '',
             content: '',
             image_url: undefined,
-            community_id: null, // ✅ match schema
+            community_id: null,
         },
     });
 
     // mutation function
-    function onSubmit(values: PostInputs) {
+    const onSubmit = (values: PostInputs) => {
         createpost(
             { post: values, avatar_url },
             {
@@ -70,6 +60,9 @@ const CreatePost = () => {
                         className: 'bg-gray-900 text-purple-500',
                     });
                     queryClient.invalidateQueries({ queryKey: ['posts'] });
+                    queryClient.invalidateQueries({
+                        queryKey: ['community-posts'],
+                    });
                     form.reset();
                     navigate('/');
                 },
@@ -80,7 +73,7 @@ const CreatePost = () => {
                 },
             }
         );
-    }
+    };
     return (
         <div className="mx-auto w-full max-w-2xl rounded-3xl border-2 p-4">
             <Form {...form}>
@@ -279,43 +272,13 @@ const CreatePost = () => {
                             />
                         </div>
                     )}
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button
-                                type="submit"
-                                className="cursor-pointer bg-purple-500 hover:bg-purple-600"
-                                disabled={isCreating || !form.formState.isDirty}
-                                // variant={'outline'}
-                            >
-                                {isCreating ? (
-                                    <Spinner size="sm" />
-                                ) : (
-                                    'Create Post'
-                                )}
-                            </Button>
-                        </AlertDialogTrigger>
-                        {!isAuthenticated && (
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>
-                                        Login required
-                                    </AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        You must login to be able to create a
-                                        post
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>
-                                        Cancel
-                                    </AlertDialogCancel>
-                                    <AlertDialogAction>
-                                        <Link to="/login">Login</Link>
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        )}
-                    </AlertDialog>
+                    <LoginAlert
+                        size="lg"
+                        label="Create Post"
+                        isDirty={form.formState.isDirty}
+                        message="to create a post"
+                        isCreating={isCreating}
+                    />
                 </form>
             </Form>
         </div>

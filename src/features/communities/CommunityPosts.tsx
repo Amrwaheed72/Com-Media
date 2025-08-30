@@ -41,7 +41,12 @@ const CommunityPosts = ({ id }: Props) => {
 
     const totalPages = Math.ceil(totalCount / limit);
 
-    if (isPending) return <Spinner size="xl" variant="ring" />;
+    if (isPending)
+        return (
+            <div className="flex justify-center">
+                <Spinner size="xl" variant="ring" />
+            </div>
+        );
     if (error)
         return <ErrorFallBack message={error.message} onRetry={refetch} />;
     if (!data || data.length === 0) {

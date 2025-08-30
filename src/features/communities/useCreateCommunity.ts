@@ -1,4 +1,5 @@
 import { createCommunity } from '@/services/api';
+import { useUserAuth } from '@/store/UserAuth';
 import { useMutation } from '@tanstack/react-query';
 
 interface CreateCommunityInput {
@@ -7,9 +8,12 @@ interface CreateCommunityInput {
 }
 
 const useCreateCommunity = () => {
+    const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
     const { mutate, isPending: isCreating } = useMutation({
-        mutationFn: ({ name, description }: CreateCommunityInput) =>
-            createCommunity(name, description),
+        mutationFn: async ({ name, description }: CreateCommunityInput) => {
+            if (!isAuthenticated) throw new Error('Not logged in');
+            return createCommunity(name, description);
+        },
     });
 
     return { mutate, isCreating };

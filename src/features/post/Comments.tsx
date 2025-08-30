@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
@@ -7,10 +6,8 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { useUserAuth } from '@/store/UserAuth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-
 import { z } from 'zod';
 import useGetComments from './useGetComments';
 import { Spinner } from '@/components/ui/spinner';
@@ -18,19 +15,9 @@ import ErrorFallBack from '@/ui/ErrorFallBack';
 import useAddComment from './useAddComment';
 import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Link } from 'react-router';
+
 import CommentItem from './CommentItem';
+import LoginAlert from '@/ui/LoginAlert';
 
 export const commentSchema = z.object({
     content: z.string().min(1, 'a comment must not be empty'),
@@ -64,7 +51,6 @@ const Comments = ({ postId }: Props) => {
         error,
         refetch,
     } = useGetComments(postId);
-    const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
     const queryClient = useQueryClient();
     const form = useForm<z.infer<typeof commentSchema>>({
         resolver: zodResolver(commentSchema),
@@ -89,7 +75,6 @@ const Comments = ({ postId }: Props) => {
                     form.reset();
                 },
                 onError: (err) => {
-                    if (!isAuthenticated) return;
                     toast.error(
                         err.message || 'Error adding comment, please try again'
                     );
@@ -111,7 +96,6 @@ const Comments = ({ postId }: Props) => {
         const map = new Map<number, CommentNode>();
         const roots: CommentNode[] = [];
 
-        // initialize all comments with empty children
         comments.forEach((comment) => {
             map.set(comment.id, { ...comment, children: [] });
         });
@@ -154,44 +138,13 @@ const Comments = ({ postId }: Props) => {
                             </FormItem>
                         )}
                     />
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button
-                                variant="outline"
-                                className="mt-2 cursor-pointer px-4 py-2"
-                                disabled={
-                                    !form.formState.isDirty || isCreatingComment
-                                }
-                                type="submit"
-                            >
-                                {isCreatingComment ? (
-                                    <Spinner size="sm" variant="ring" />
-                                ) : (
-                                    'Add Comment'
-                                )}
-                            </Button>
-                        </AlertDialogTrigger>
-                        {!isAuthenticated && (
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>
-                                        Login required
-                                    </AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        You must login to comment on this post
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>
-                                        Cancel
-                                    </AlertDialogCancel>
-                                    <AlertDialogAction>
-                                        <Link to="/login">Login</Link>
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        )}
-                    </AlertDialog>
+                    <LoginAlert
+                        isCreating={isCreatingComment}
+                        isDirty={form.formState.isDirty}
+                        label="Add Comment"
+                        message="comment on this post"
+                        size="lg"
+                    />
                 </form>
             </Form>
             {/* comments */}

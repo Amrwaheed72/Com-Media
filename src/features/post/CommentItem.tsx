@@ -3,18 +3,7 @@ import { type Comment, type CommentNode } from './Comments';
 import { useState } from 'react';
 import { useUserAuth } from '@/store/UserAuth';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Link } from 'react-router';
+
 import {
     Form,
     FormControl,
@@ -28,9 +17,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import z from 'zod';
 import { toast } from 'sonner';
 import { Textarea } from '@/components/ui/textarea';
-import { Spinner } from '@/components/ui/spinner';
 import useAddReply from './useAddReply';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import LoginAlert from '@/ui/LoginAlert';
 
 interface Props {
     comment: Comment & { children: CommentNode[] };
@@ -43,7 +32,6 @@ export const replySchema = z.object({
 const CommentItem = ({ comment, postId }: Props) => {
     const [showReply, setShowReply] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
     const queryClient = useQueryClient();
     const user = useUserAuth((state) => state.user);
     const form = useForm<z.infer<typeof replySchema>>({
@@ -74,7 +62,6 @@ const CommentItem = ({ comment, postId }: Props) => {
                     setShowReply(false);
                 },
                 onError: (err) => {
-                    if (!isAuthenticated) return;
                     toast.error(
                         err.message || 'Error adding reply, please try again'
                     );
@@ -173,48 +160,13 @@ const CommentItem = ({ comment, postId }: Props) => {
                                     )}
                                 />
                                 <div className="flex justify-end">
-                                    <AlertDialog>
-                                        <AlertDialogTrigger asChild>
-                                            <Button
-                                                size="sm"
-                                                disabled={
-                                                    !form.formState.isDirty ||
-                                                    isCreatingReply
-                                                }
-                                                type="submit"
-                                                className="rounded-lg bg-purple-500 text-white hover:bg-purple-600"
-                                            >
-                                                {isCreatingReply ? (
-                                                    <Spinner size="sm" />
-                                                ) : (
-                                                    'Post Reply'
-                                                )}
-                                            </Button>
-                                        </AlertDialogTrigger>
-                                        {!isAuthenticated && (
-                                            <AlertDialogContent>
-                                                <AlertDialogHeader>
-                                                    <AlertDialogTitle>
-                                                        Login Required
-                                                    </AlertDialogTitle>
-                                                    <AlertDialogDescription>
-                                                        You must be logged in to
-                                                        reply to this comment.
-                                                    </AlertDialogDescription>
-                                                </AlertDialogHeader>
-                                                <AlertDialogFooter>
-                                                    <AlertDialogCancel>
-                                                        Cancel
-                                                    </AlertDialogCancel>
-                                                    <AlertDialogAction asChild>
-                                                        <Link to="/login">
-                                                            Login
-                                                        </Link>
-                                                    </AlertDialogAction>
-                                                </AlertDialogFooter>
-                                            </AlertDialogContent>
-                                        )}
-                                    </AlertDialog>
+                                    <LoginAlert
+                                        size="sm"
+                                        isCreating={isCreatingReply}
+                                        isDirty={form.formState.isDirty}
+                                        label="Add Reply"
+                                        message="reply on this comment"
+                                    />
                                 </div>
                             </form>
                         </Form>

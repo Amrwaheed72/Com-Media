@@ -74,8 +74,6 @@ const PostsList = () => {
                     ))}
                 </AnimatePresence>
             </motion.div>
-
-            {/* ✅ Pass pagination props */}
             <Paginate
                 page={page}
                 totalPages={totalPages}
