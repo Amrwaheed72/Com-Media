@@ -1,15 +1,21 @@
 import { getPosts } from '@/services/api';
 import { useQuery } from '@tanstack/react-query';
 
-const useGetPosts = () => {
-    // const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
+const useGetPosts = (from: number, to: number) => {
     const { data, isPending, error, refetch } = useQuery({
-        queryKey: ['posts'],
-        queryFn: getPosts,
+        queryKey: ['posts', from, to], // include from/to in key
+        queryFn: () => getPosts(from, to),
+        // keepPreviousData: true, // ✅ keeps old data while fetching new page
         refetchOnWindowFocus: false,
-        // enabled: isAuthenticated,
     });
-    return { data, isPending, error, refetch };
+
+    return {
+        posts: data?.posts ?? [],
+        totalCount: data?.count ?? 0,
+        isPending,
+        error,
+        refetch,
+    };
 };
 
 export default useGetPosts;

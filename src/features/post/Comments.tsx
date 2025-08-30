@@ -106,9 +106,6 @@ const Comments = ({ postId }: Props) => {
                 onRetry={refetch}
             />
         );
-    if (!comments || comments.length === 0) {
-        return <p>no comments for this post</p>;
-    }
 
     const buildCommentTree = (comments: Comment[]): CommentNode[] => {
         const map = new Map<number, CommentNode>();

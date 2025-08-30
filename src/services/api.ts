@@ -1,37 +1,57 @@
-import type { postInputs } from '@/features/createPost/formSchema';
+import type { Community } from '@/features/communities/CommunitiesList';
+import type { Post } from '@/features/communities/CommunityPosts';
+import type { PostInputs } from '@/features/createPost/formSchema';
 import type { CommentInput } from '@/features/post/Comments';
 import { supabase } from '@/supabase';
 
 interface CreatePostArgs {
-    post: postInputs;
+    post: PostInputs;
     avatar_url?: string;
 }
 
 export const createPost = async ({ post, avatar_url }: CreatePostArgs) => {
-    const filepath = `${post.title}-${Date.now()}-${post.image_url.name}`;
+    // sanitize the title for storage path
+    const safeTitle =
+        post.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-') // keep only a-z, 0-9, replace others with -
+            .replace(/^-+|-+$/g, '') || // trim leading/trailing dashes
+        'post'; // fallback if nothing left
+
+    const filepath = `${safeTitle}-${Date.now()}-${post.image_url.name}`;
+
     const { error: uploadError } = await supabase.storage
         .from('post images')
         .upload(filepath, post.image_url);
+
     if (uploadError) throw new Error(uploadError.message);
+
     const { data: publicUrlData } = supabase.storage
         .from('post images')
         .getPublicUrl(filepath);
-    const { data, error } = await supabase
-        .from('posts')
-        .insert({ ...post, image_url: publicUrlData.publicUrl, avatar_url });
+
+    const { data, error } = await supabase.from('posts').insert({
+        ...post,
+        image_url: publicUrlData.publicUrl,
+        avatar_url,
+    });
 
     if (error) throw new Error(error.message);
+
     return data;
 };
 
-export const getPosts = async () => {
-    let { data: posts, error } = await supabase
+export const getPosts = async (from: number, to: number) => {
+    const { data, error, count } = await supabase
         .from('posts')
-        .select('*')
+        .select('*', { count: 'exact' }) // count = total rows
+        .range(from, to)
         .order('created_at', { ascending: false });
+
     if (error) throw new Error(error.message);
-    return posts;
+    return { posts: data ?? [], count: count ?? 0 };
 };
+
 export const getPostById = async (postId: number) => {
     let { data: post, error } = await supabase
         .from('posts')
@@ -130,4 +150,58 @@ export const createReply = async (
     });
 
     if (error) throw error;
+};
+
+export const createCommunity = async (
+    name: string,
+    description: string
+): Promise<void> => {
+    const { error } = await supabase
+        .from('communities')
+        .insert({ name, description });
+
+    if (error) throw error;
+};
+
+export const getAllCommunities = async (
+    from: number,
+    to: number
+): Promise<{ communities: Community[]; count: number }> => {
+    const { data, count, error } = await supabase
+        .from('communities')
+        .select('*', { count: 'exact' })
+        .range(from, to)
+        .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return {
+        communities: data ?? [],
+        count: count ?? 0,
+    };
+};
+export const getCommunityByName = async () => {
+    let { data, error } = await supabase.from('communities').select('name,id');
+    if (error) throw error;
+    return data;
+};
+
+export const getCommunityPosts = async (
+    id: number,
+    from: number,
+    to: number
+): Promise<{ communityPosts: Post[]; count: number }> => {
+    const { data, error, count } = await supabase
+        .from('posts')
+        .select('*, communities(name)', { count: 'exact' })
+        .eq('community_id', id)
+        .order('created_at', { ascending: false })
+        .range(from, to);
+
+    if (error) throw error;
+
+    return {
+        communityPosts: data ?? [],
+        count: count ?? 0,
+    };
 };

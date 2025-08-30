@@ -1,11 +1,22 @@
+import { useState } from 'react';
+import useGetCommunityPosts from './useGetCommunityPosts';
+import Paginate from '@/ui/Paginate';
 import { Spinner } from '@/components/ui/spinner';
-import useGetPosts from './useGetPosts';
 import ErrorFallBack from '@/ui/ErrorFallBack';
 import Empty from '@/ui/Empty';
-import PostCard from './PostCard';
+import PostCard from '../home/PostCard';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
-import Paginate from '@/ui/Paginate';
+
+interface Props {
+    id: number;
+}
+
+export interface Community {
+    id: number;
+    name: string;
+    description: string;
+    created_at: string;
+}
 
 export interface Post {
     id: number;
@@ -15,47 +26,34 @@ export interface Post {
     created_at: string;
     avatar_url: string;
     community_id: number;
+    communities?: { name: string } | null;
 }
 
-const PostsList = () => {
+const CommunityPosts = ({ id }: Props) => {
     const [page, setPage] = useState(1);
     const limit = 10;
 
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
-    const { posts, totalCount, isPending, error, refetch } = useGetPosts(
-        from,
-        to
-    );
-
-    if (isPending)
-        return (
-            <div className="flex justify-center">
-                <Spinner size="xl" variant="ring" />
-            </div>
-        );
-
-    if (error)
-        return (
-            <ErrorFallBack
-                message="Could not display posts"
-                onRetry={refetch}
-            />
-        );
-
-    if (!posts || posts.length === 0)
-        return (
-            <Empty
-                message="No posts to display, try to create one or join community to display their posts"
-                type="none"
-            />
-        );
+    const { data, totalCount, error, refetch, isPending } =
+        useGetCommunityPosts(id, from, to);
 
     const totalPages = Math.ceil(totalCount / limit);
 
+    if (isPending) return <Spinner size="xl" variant="ring" />;
+    if (error)
+        return <ErrorFallBack message={error.message} onRetry={refetch} />;
+    if (!data || data.length === 0) {
+        return <Empty type="posts" message="no community posts to display" />;
+    }
+
     return (
         <div className="w-full">
+            <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-6xl font-bold text-transparent">
+                {data && data[0].communities?.name} Community Posts
+            </h2>
+
             <motion.div
                 className="flex flex-wrap justify-center gap-6"
                 initial="hidden"
@@ -69,7 +67,7 @@ const PostsList = () => {
                 }}
             >
                 <AnimatePresence>
-                    {posts.map((post: Post) => (
+                    {data.map((post: Post) => (
                         <PostCard post={post} key={post.id} />
                     ))}
                 </AnimatePresence>
@@ -85,4 +83,4 @@ const PostsList = () => {
     );
 };
 
-export default PostsList;
+export default CommunityPosts;

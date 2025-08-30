@@ -1,16 +1,16 @@
 import { z } from 'zod';
 
 export const formSchema = z.object({
-    title: z.string().min(1, 'a post must have a title'),
+    title: z.string().min(1, 'A post must have a title'),
     content: z
         .string()
-        .min(1, { message: 'a post content can not be empty' })
-        .max(1000, {
-            message: 'a post content can not exceed 1000 character',
-        }),
+        .min(1, { message: 'A post content cannot be empty' })
+        .max(1000, { message: 'A post content cannot exceed 1000 characters' }),
+    community_id: z.number().nullable().optional(),
     image_url: z
         .instanceof(File)
         .refine((file) => file.type.startsWith('image/'), 'Must be an image')
-        .refine((file) => file.size <= 10 * 1024 * 1024, 'Max size is 5MB'),
+        .refine((file) => file.size <= 10 * 1024 * 1024, 'Max size is 10MB'),
 });
-export type postInputs = z.infer<typeof formSchema>;
+
+export type PostInputs = z.infer<typeof formSchema>;

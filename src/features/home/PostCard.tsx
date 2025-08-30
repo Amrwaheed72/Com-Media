@@ -16,6 +16,7 @@ interface Props {
 const PostCard = ({ post }: Props) => {
     const { id, title, image_url, avatar_url, created_at } = post;
     const { data, isPending: isLoadingVotes, error, refetch } = useGetVotes(id);
+
     const {
         data: comments,
         isPending,
@@ -46,7 +47,7 @@ const PostCard = ({ post }: Props) => {
         >
             <div className="pointer-events-none absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 blur-sm transition duration-300 group-hover:opacity-50" />
 
-            <Card className="relative z-10 overflow-hidden transition-colors duration-300">
+            <Card className="relative z-10 min-w-[340px] overflow-hidden transition-colors duration-300">
                 <Link to={`/post/${id}`} className="block">
                     <CardContent className="flex flex-col gap-5 p-5 px-8">
                         <div className="flex items-center gap-2">
@@ -95,6 +96,7 @@ const PostCard = ({ post }: Props) => {
 
                         {/* Date */}
                         <div className="flex flex-1 items-end justify-end">
+                            {/* <div>{community_id}</div> */}
                             <p className="text-xs text-gray-500 dark:text-gray-400">
                                 {new Date(created_at).toLocaleDateString(
                                     'en-US',

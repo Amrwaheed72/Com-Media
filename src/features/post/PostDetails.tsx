@@ -45,8 +45,8 @@ const PostDetails = () => {
                     {new Date(created_at).toLocaleTimeString()}
                 </span>
             </p>
-            <VoteButtons postId={postId} />
-            <Comments postId={postId} />
+            <VoteButtons postId={numericId} />
+            <Comments postId={numericId} />
         </div>
     );
 };

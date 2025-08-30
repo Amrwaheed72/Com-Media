@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { ModeToggle } from './ModeToggle';
 import {
     DropdownMenu,
@@ -27,10 +27,9 @@ const Navbar = () => {
     const normalLink = `text-gray-600 dark:hover:text-white dark:text-gray-300 hover:text-black ${baseLink}`;
     const activeLink = `dark:text-white text-black font-medium ${baseLink}`;
     const userImage = user?.user_metadata.avatar_url;
-    const navigate = useNavigate();
     // console.log(user?.user_metadata.avatar_url);
     return (
-        <nav className="fixed top-0 w-full border-b border-white/10 shadow-lg backdrop:blur-lg dark:bg-[rgba(10,10,10,0.8)]">
+        <nav className="fixed top-0 z-20 w-full border-b border-white/10 shadow-lg backdrop:blur-lg dark:bg-[rgba(10,10,10,0.8)]">
             <div className="mx-auto max-w-5xl px-4">
                 <div className="flex h-16 items-center justify-between">
                     <Link to="/" className="font-mono text-xl font-bold">

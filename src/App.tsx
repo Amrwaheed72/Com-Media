@@ -1,12 +1,11 @@
-import { Route, Routes, useNavigate } from 'react-router';
+import { Route, Routes } from 'react-router';
 import { Toaster } from 'sonner';
 import HomePage from './pages/HomePage';
-import Navbar from './ui/Navbar';
 import { useEffect } from 'react';
 import {
     cleanupAuthListener,
     initAuthListener,
-    useUserAuth,
+    // useUserAuth,
 } from './store/UserAuth';
 import CreatePostPage from './pages/CreatePostPage';
 import PostPage from './pages/PostPage';
@@ -16,9 +15,12 @@ import VerifyEmail from './pages/VarifyEmail';
 import AuthCallback from './pages/AuthCallback';
 import Layout from './pages/Layout';
 import AuthLayout from './pages/AuthLayout';
+import CommunitiesPage from './pages/CommunitiesPage';
+import CreateCommunityPage from './pages/CreateCommunityPage';
+import CommunityPage from './pages/CommunityPage';
 
 function App() {
-    const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
+    // const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
     useEffect(() => {
         initAuthListener();
         return () => cleanupAuthListener();
@@ -31,6 +33,15 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/create" element={<CreatePostPage />} />
                     <Route path="/post/:postId" element={<PostPage />} />
+                    <Route
+                        path="/community/create"
+                        element={<CreateCommunityPage />}
+                    />
+                    <Route path="/communities" element={<CommunitiesPage />} />
+                    <Route
+                        path="community/:communityId"
+                        element={<CommunityPage />}
+                    />
                 </Route>
                 <Route element={<AuthLayout />}>
                     <Route path="/login" element={<LoginPage />} />
