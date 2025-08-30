@@ -38,7 +38,7 @@ const CreatePost = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const avatar_url = user?.user_metadata.avatar_url;
+    const avatar_url = user?.user_metadata.avatar_url ?? '/avatar.jpg';
 
     const form = useForm<PostInputs>({
         resolver: zodResolver(formSchema),
@@ -66,9 +66,10 @@ const CreatePost = () => {
                     form.reset();
                     navigate('/');
                 },
-                onError: () => {
+                onError: (err) => {
                     toast.error(
-                        'sorry, something went wrong while creating your post, please try again'
+                        err.message ||
+                            'sorry, something went wrong while creating your post, please try again'
                     );
                 },
             }
