@@ -29,7 +29,7 @@ const PostDetails = () => {
                 onRetry={refetch}
             />
         );
-    const { title, image_url, content, created_at, user_id } = data;
+    const { title, image_url, content, created_at } = data;
     return (
         <div className="w-full space-y-6 overflow-hidden">
             <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-start text-4xl font-bold text-transparent md:text-6xl">
