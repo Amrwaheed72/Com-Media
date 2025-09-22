@@ -161,8 +161,9 @@ const CommentItem = ({ comment, postId }: Props) => {
                                         size="sm"
                                         isCreating={isCreatingReply}
                                         isDirty={form.formState.isDirty}
-                                        label="Add Reply"
+                                        label="Reply"
                                         message="reply on this comment"
+                                        progress='Replying...'
                                     />
                                 </div>
                             </form>

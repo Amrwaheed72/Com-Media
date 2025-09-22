@@ -141,9 +141,10 @@ const Comments = ({ postId }: Props) => {
                     <LoginAlert
                         isCreating={isCreatingComment}
                         isDirty={form.formState.isDirty}
-                        label="Add Comment"
+                        label="Add a Comment"
                         message="comment on this post"
                         size="lg"
+                        progress="Adding Comment..."
                     />
                 </form>
             </Form>
