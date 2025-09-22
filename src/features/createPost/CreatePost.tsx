@@ -32,6 +32,7 @@ import LoginAlert from '@/ui/LoginAlert';
 
 const CreatePost = () => {
     const user = useUserAuth((state) => state.user);
+    const user_id = user?.id ?? '';
     const [preview, setPreview] = useState<string | null>(null);
     const { createpost, isCreating } = useCreatePost();
     const { communities, isPending, error } = useGetCommunityName();
@@ -53,7 +54,7 @@ const CreatePost = () => {
     // mutation function
     const onSubmit = (values: PostInputs) => {
         createpost(
-            { post: values, avatar_url },
+            { post: values, avatar_url, user_id: user_id },
             {
                 onSuccess: () => {
                     toast.success('Post created successfully', {

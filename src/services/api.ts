@@ -7,9 +7,14 @@ import { supabase } from '@/supabase';
 interface CreatePostArgs {
     post: PostInputs;
     avatar_url?: string;
+    user_id: string;
 }
 
-export const createPost = async ({ post, avatar_url }: CreatePostArgs) => {
+export const createPost = async ({
+    post,
+    avatar_url,
+    user_id,
+}: CreatePostArgs) => {
     // sanitize the title for storage path
     const safeTitle =
         post.title
@@ -34,6 +39,7 @@ export const createPost = async ({ post, avatar_url }: CreatePostArgs) => {
         ...post,
         image_url: publicUrlData.publicUrl,
         avatar_url,
+        user_id,
     });
 
     if (error) throw new Error(error.message);

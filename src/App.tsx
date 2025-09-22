@@ -18,6 +18,7 @@ import AuthLayout from './pages/AuthLayout';
 import CommunitiesPage from './pages/CommunitiesPage';
 import CreateCommunityPage from './pages/CreateCommunityPage';
 import CommunityPage from './pages/CommunityPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
     // const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
@@ -41,7 +42,8 @@ function App() {
                     <Route
                         path="community/:communityId"
                         element={<CommunityPage />}
-                    />
+                    />.
+                    <Route path='/profile' element={<ProfilePage />} />
                 </Route>
                 <Route element={<AuthLayout />}>
                     <Route path="/login" element={<LoginPage />} />

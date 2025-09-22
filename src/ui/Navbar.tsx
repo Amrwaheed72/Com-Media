@@ -78,17 +78,19 @@ const Navbar = () => {
                                 <div className="flex items-center justify-center gap-2">
                                     <div className="flex items-center justify-center gap-2">
                                         {userImage && (
-                                            <Avatar>
-                                                <AvatarImage
-                                                    className="h-8 w-8 rounded-full"
-                                                    src={userImage}
-                                                    alt="Amr"
-                                                />
-                                                <AvatarFallback>
-                                                    {user?.user_metadata
-                                                        ?.user_name ?? ''}
-                                                </AvatarFallback>
-                                            </Avatar>
+                                            <Link to={'/profile'}>
+                                                <Avatar>
+                                                    <AvatarImage
+                                                        className="h-8 w-8 rounded-full"
+                                                        src={userImage}
+                                                        alt="Amr"
+                                                    />
+                                                    <AvatarFallback>
+                                                        {user?.user_metadata
+                                                            ?.user_name ?? ''}
+                                                    </AvatarFallback>
+                                                </Avatar>
+                                            </Link>
                                         )}
                                         {/* <p className="text-xs">
                                         {user?.user_metadata?.user_name}

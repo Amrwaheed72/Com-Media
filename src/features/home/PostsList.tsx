@@ -28,6 +28,7 @@ const PostsList = () => {
         from,
         to
     );
+    const totalPages = Math.ceil(totalCount / limit);
 
     if (isPending)
         return (
@@ -51,8 +52,6 @@ const PostsList = () => {
                 type="none"
             />
         );
-
-    const totalPages = Math.ceil(totalCount / limit);
 
     return (
         <div className="w-full">

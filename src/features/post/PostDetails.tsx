@@ -4,14 +4,18 @@ import { Spinner } from '@/components/ui/spinner';
 import ErrorFallBack from '@/ui/ErrorFallBack';
 import Comments from './Comments';
 import VoteButtons from './VoteButtons';
+import { useUserAuth } from '@/store/UserAuth';
 
 type PostIddd = {
     postId: string;
 };
 const PostDetails = () => {
+    const user = useUserAuth((state) => state.user);
+    console.log(user);
     const { postId } = useParams<PostIddd>();
     const numericId = Number(postId);
     const { data, isPending, error, refetch } = useGetPost(numericId);
+    console.log(data);
     if (isPending)
         return (
             <div className="flex justify-center">
@@ -25,7 +29,7 @@ const PostDetails = () => {
                 onRetry={refetch}
             />
         );
-    const { title, image_url, content, created_at } = data;
+    const { title, image_url, content, created_at, user_id } = data;
     return (
         <div className="w-full space-y-6 overflow-hidden">
             <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-start text-4xl font-bold text-transparent md:text-6xl">

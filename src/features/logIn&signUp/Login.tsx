@@ -150,7 +150,7 @@ const Login = () => {
                     </div>
 
                     <p className="text-muted-foreground text-center">
-                        or{' '}
+                        or
                         <span className="inline md:hidden">sign in with</span>
                     </p>
 
