@@ -100,6 +100,7 @@ const CreateCommunityForm = () => {
                         isDirty={form.formState.isDirty}
                         message="create a community"
                         label="Create Community"
+                        progress='Creating...'
                     />
                 </form>
             </Form>
