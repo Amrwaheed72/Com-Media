@@ -280,6 +280,7 @@ const CreatePost = () => {
                         isDirty={form.formState.isDirty}
                         message="to create a post"
                         isCreating={isCreating}
+                        progress='Creating...'
                     />
                 </form>
             </Form>

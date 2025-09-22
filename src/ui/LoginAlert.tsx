@@ -22,6 +22,7 @@ interface LoginAlertProps {
     message: string;
     size?: ButtonSize; // "default" | "sm" | "lg" | "icon" | null | undefined
     label: string;
+    progress: string;
 }
 
 const LoginAlert: React.FC<LoginAlertProps> = ({
@@ -30,6 +31,7 @@ const LoginAlert: React.FC<LoginAlertProps> = ({
     message,
     size = 'default',
     label,
+    progress,
 }) => {
     const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
 
@@ -44,7 +46,9 @@ const LoginAlert: React.FC<LoginAlertProps> = ({
                         disabled={isCreating || !isDirty}
                     >
                         {isCreating ? (
-                            <Spinner variant="ring" size="sm" />
+                            <>
+                                <Spinner variant="ring" size="sm" /> {progress}
+                            </>
                         ) : (
                             label
                         )}
