@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/select';
 import useGetCommunityName from '../communities/useGetCommunityName';
 import LoginAlert from '@/ui/LoginAlert';
+import ReusableFormField from '@/ui/ReusableFormField';
 
 const CreatePost = () => {
     const user = useUserAuth((state) => state.user);
@@ -83,51 +84,28 @@ const CreatePost = () => {
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="mx-auto max-w-2xl space-y-4"
                 >
-                    <FormField
+                    <ReusableFormField
                         control={form.control}
                         name="title"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel
-                                    htmlFor="title"
-                                    className="mb-2 block font-medium"
-                                >
-                                    Post Title
-                                </FormLabel>
-                                <FormControl>
-                                    <Input
-                                        id="title"
-                                        placeholder="Post Title"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                        label="Post Title"
+                    >
+                        {(field) => (
+                            <Input placeholder="Post Title000" {...field} />
                         )}
-                    />
-                    <FormField
+                    </ReusableFormField>
+                    <ReusableFormField
                         control={form.control}
                         name="content"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel
-                                    htmlFor="content"
-                                    className="mb-2 block font-medium"
-                                >
-                                    Post Content
-                                </FormLabel>
-                                <FormControl>
-                                    <Textarea
-                                        id="content"
-                                        rows={5}
-                                        className="resize-none"
-                                        {...field}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                        label="Post Content"
+                    >
+                        {(field) => (
+                            <Textarea
+                                className="resize-none"
+                                placeholder="Enter the post content..."
+                                {...field}
+                            />
                         )}
-                    />
+                    </ReusableFormField>
                     {isPending ? (
                         <Spinner size="sm" variant="ring" />
                     ) : (
@@ -280,7 +258,7 @@ const CreatePost = () => {
                         isDirty={form.formState.isDirty}
                         message="to create a post"
                         isCreating={isCreating}
-                        progress='Creating...'
+                        progress="Creating..."
                     />
                 </form>
             </Form>

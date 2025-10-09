@@ -85,19 +85,16 @@ export const useUserAuth = create<UserAuthType>((set) => ({
             return { error, data: null };
         }
 
-        // ✅ Success toast is handled here for direct password login.
         toast.success('Logged in successfully!');
         return { data, error: null };
     },
 
     signInWithGoogle: async () => {
-        // 🚩 Set a flag in session storage before redirecting.
         sessionStorage.setItem('oauth_provider', 'Google');
         await supabase.auth.signInWithOAuth({ provider: 'google' });
     },
 
     signInWithGithub: async () => {
-        // 🚩 Set a flag in session storage before redirecting.
         sessionStorage.setItem('oauth_provider', 'GitHub');
         await supabase.auth.signInWithOAuth({ provider: 'github' });
     },
@@ -108,14 +105,12 @@ export const useUserAuth = create<UserAuthType>((set) => ({
             toast.error(error.message);
             console.error(error);
         } else {
-            // ✅ Success toast is handled here for direct logout.
             toast('You have logged out.');
         }
         set({ user: null, isAuthenticated: false });
     },
 }));
 
-// 🔹 Listener
 let unsubscribe: (() => void) | null = null;
 
 export const initAuthListener = () => {
@@ -130,11 +125,9 @@ export const initAuthListener = () => {
                     isAuthenticated: true,
                 });
 
-                // ✨ Special check for OAuth success after redirect.
                 const provider = sessionStorage.getItem('oauth_provider');
                 if (event === 'SIGNED_IN' && provider) {
                     toast.success(`Logged in with ${provider} successfully!`);
-                    // 🧹 Clean up the flag so it doesn't run again.
                     sessionStorage.removeItem('oauth_provider');
                 }
             } else {

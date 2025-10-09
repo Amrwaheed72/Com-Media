@@ -211,3 +211,13 @@ export const getCommunityPosts = async (
         count: count ?? 0,
     };
 };
+
+export const getUserById = async (user_id: string) => {
+    const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user_id)
+        .single();
+    if (error) throw error;
+    return data;
+};
