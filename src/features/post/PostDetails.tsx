@@ -24,7 +24,6 @@ const PostDetails = () => {
         error: errorUser,
         refetch: refetchUser,
     } = useGetPosterData(user_id);
-    console.log(userData);
 
     if (isPending)
         return (
@@ -32,14 +31,13 @@ const PostDetails = () => {
                 <Spinner size="xl" variant="ring" />
             </div>
         );
-    if (error)
+    if (error || errorUser)
         return (
             <ErrorFallBack
                 message="Could not display the post details"
-                onRetry={refetch}
+                onRetry={refetch || refetchUser}
             />
         );
-    console.log(isLoadingUser);
     const { title, image_url, content, created_at } = data;
     return (
         <div className="mx-auto w-full max-w-4xl space-y-2 rounded-lg border-2 p-2 sm:p-12">
