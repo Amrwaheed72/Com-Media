@@ -5,7 +5,7 @@ const ProfileLayout = () => {
     return (
         <div className="h-full w-full">
             <ProfileSidebar />
-            <main className="ml-32">
+            <main className="mx-auto ml-18 sm:ml-34">
                 <Outlet />
             </main>
         </div>

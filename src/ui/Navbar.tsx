@@ -210,16 +210,19 @@ const Navbar = () => {
                                 </DropdownMenuContent>
                             </DropdownMenu>
                             {user ? (
-                                <Avatar>
-                                    <AvatarImage
-                                        className="h-8 w-8 rounded-full"
-                                        src={userImage}
-                                        alt="Amr"
-                                    />
-                                    <AvatarFallback>
-                                        {user?.user_metadata.user_name ?? ''}
-                                    </AvatarFallback>
-                                </Avatar>
+                                <Link to={'/profile'}>
+                                    <Avatar>
+                                        <AvatarImage
+                                            className="h-8 w-8 rounded-full"
+                                            src={userImage}
+                                            alt="Amr"
+                                        />
+                                        <AvatarFallback>
+                                            {user?.user_metadata.user_name ??
+                                                ''}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </Link>
                             ) : (
                                 <Tooltip>
                                     <TooltipTrigger asChild>
