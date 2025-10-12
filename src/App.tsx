@@ -21,6 +21,7 @@ import CommunityPage from './pages/CommunityPage';
 import ProfilePage from './pages/ProfilePage';
 import ProfileLayout from './pages/ProfileLayout';
 import ProfileOverview from './features/profile/ProfileOverview';
+import UserPosts from './features/profile/UserPosts';
 
 function App() {
     // const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
@@ -48,7 +49,7 @@ function App() {
                     <Route path="/profile" element={<ProfileLayout />}>
                         <Route index element={<ProfilePage />} />
                         <Route path="overview" element={<ProfileOverview />} />
-                        <Route path="posts" />
+                        <Route path="posts" element={<UserPosts />} />
                         <Route path="communities" />
                         <Route path="settings" />
                     </Route>

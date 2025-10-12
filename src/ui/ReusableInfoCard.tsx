@@ -1,19 +1,27 @@
-import { Trello } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
 interface StatsProps {
     title: string;
-    content: string;
+    children?: React.ReactNode;
+    icon: React.ReactNode;
+    classNames?: string;
 }
-const ReusableInfoCard = ({ title, content }: StatsProps) => {
+const ReusableInfoCard = ({
+    title,
+    children,
+    icon,
+    classNames,
+}: StatsProps) => {
     return (
         <div className="h-[150px] w-full items-center rounded-xl border-2 bg-white p-2 sm:p-4 dark:bg-black">
             <div className="flex h-full items-center justify-between">
                 <div className="flex flex-col gap-2">
                     <p className="font-semibold text-gray-400">{title}</p>
-                    <h3 className="text-2xl font-bold">{content}</h3>
+                    {children}
                 </div>
-                <div className="rounded-lg bg-blue-200">
-                    <div className="p-2">
-                        <Trello className="text-blue-600" />
+                <div className={cn(`rounded-lg`, classNames)}>
+                    <div className="p-2 border rounded-lg">
+                        {icon}
                     </div>
                 </div>
             </div>

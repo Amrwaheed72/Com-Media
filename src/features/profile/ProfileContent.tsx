@@ -5,6 +5,7 @@ import { Check } from 'lucide-react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import useGetUserData from './useGetUserData';
+import { Spinner } from '@/components/ui/spinner';
 
 const VerifiedBadge = () => (
     <ToolTipComponent content="Verified">
@@ -29,10 +30,14 @@ const ProfileContent = () => {
     }
 
     const { data, isPending, error, refetch } = useGetUserData(user.id);
-    if(isPending) return <p>af</p>
-    console.log(data);
+    if (isPending)
+        return (
+            <div className='flex justify-center'>
+                <Spinner size="xl" variant="ring" />
+            </div>
+        );
 
-    const { phone, created_at } = user;
+    const { phone, created_at } = data;
     const {
         name,
         user_name,

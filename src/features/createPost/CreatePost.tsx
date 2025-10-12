@@ -90,7 +90,7 @@ const CreatePost = () => {
                         label="Post Title"
                     >
                         {(field) => (
-                            <Input placeholder="Post Title000" {...field} />
+                            <Input placeholder="Post Title" {...field} />
                         )}
                     </ReusableFormField>
                     <ReusableFormField

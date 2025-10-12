@@ -15,7 +15,7 @@ const ToolTipComponent = ({ children, content, open }: TooltipProps) => {
         <Tooltip>
             <TooltipTrigger asChild>{children}</TooltipTrigger>
             {!open && (
-                <TooltipContent>
+                <TooltipContent className="z-100">
                     <p>{content}</p>
                 </TooltipContent>
             )}

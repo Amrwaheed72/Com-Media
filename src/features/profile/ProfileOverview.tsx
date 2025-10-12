@@ -1,8 +1,30 @@
 import { useUserAuth } from '@/store/UserAuth';
 import ReusableInfoCard from '@/ui/ReusableInfoCard';
+import useGetUserLikes from './useGetUserLikes';
+import { useNavigate } from 'react-router';
+import { FileText, Pencil, ThumbsDown, ThumbsUp, Users } from 'lucide-react';
+import useGetUserDisLikes from './useGetUserDisLikes';
+import { Spinner } from '@/components/ui/spinner';
+import { useEffect } from 'react';
 
 const ProfileOverview = () => {
     const user = useUserAuth((state) => state.user);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!user) navigate('/');
+    }, []);
+    const {
+        data: likes,
+        isPending: isLoadingLikes,
+        error: errorLikes,
+        refetch: refetchLikes,
+    } = useGetUserLikes(user?.id);
+    const {
+        data: dislikes,
+        isPending: isLoadingDisLikes,
+        error: errorDisLikes,
+        refetch: refetchDislikes,
+    } = useGetUserDisLikes(user?.id);
     return (
         <div>
             <div>
@@ -11,11 +33,41 @@ const ProfileOverview = () => {
                 </h2>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                <ReusableInfoCard title="Your Posts Count" content="3" />
-                <ReusableInfoCard title="Your Posts Count" content="3" />
-                <ReusableInfoCard title="Your Posts Count" content="3" />
-                <ReusableInfoCard title="Your Posts Count" content="3" />
-            </div>{' '}
+                <ReusableInfoCard
+                    title="Your Posts Count"
+                    icon={<Pencil className="text-purple-500" />}
+                >
+                    <h3 className="text-2xl font-bold">3</h3>
+                </ReusableInfoCard>
+                <ReusableInfoCard
+                    title="Your Communities Count"
+                    icon={<Users className="text-yellow-500" />}
+                >
+                    <h3 className="text-2xl font-bold">3</h3>
+                </ReusableInfoCard>
+                <ReusableInfoCard
+                    title="Your Likes Count"
+                    icon={<ThumbsUp className="text-green-500" />}
+                >
+                    {isLoadingLikes ? (
+                        <Spinner variant="ring" size="sm" />
+                    ) : (
+                        <h3 className="text-2xl font-bold">{likes?.count}</h3>
+                    )}
+                </ReusableInfoCard>
+                <ReusableInfoCard
+                    title="Your Dislikes Count"
+                    icon={<ThumbsDown className="text-red-500" />}
+                >
+                    {isLoadingDisLikes ? (
+                        <Spinner variant="ring" size="sm" />
+                    ) : (
+                        <h3 className="text-2xl font-bold">
+                            {dislikes?.count}
+                        </h3>
+                    )}
+                </ReusableInfoCard>
+            </div>
         </div>
     );
 };

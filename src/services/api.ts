@@ -221,3 +221,34 @@ export const getUserById = async (user_id: string) => {
     if (error) throw error;
     return data;
 };
+
+export const getUserPostsById = async (user_id: string) => {
+    const { data, error, count } = await supabase
+        .from('posts')
+        .select('*', { count: 'exact' })
+        .eq('user_id', user_id)
+        .order('created_at', { ascending: false });
+    if (error) throw error;
+    return { data, count: count ?? 0 };
+};
+
+export const userTotalLikes = async (user_id: string) => {
+    const { data, error, count } = await supabase
+        .from('votes')
+        .select('*', { count: 'exact' })
+        .eq('user_id', user_id)
+        .eq('vote', 1)
+        .order('created_at', { ascending: false });
+    if (error) throw error;
+    return { data, count: count };
+};
+export const userTotalDisLikes = async (user_id: string) => {
+    const { data, error, count } = await supabase
+        .from('votes')
+        .select('*', { count: 'exact' })
+        .eq('user_id', user_id)
+        .eq('vote', -1)
+        .order('created_at', { ascending: false });
+    if (error) throw error;
+    return { data, count: count };
+};
