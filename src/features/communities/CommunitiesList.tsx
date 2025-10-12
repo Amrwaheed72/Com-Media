@@ -32,12 +32,13 @@ const CommunitiesList = () => {
     const { communities, totalCount, isPending, error, refetch } =
         useGetCommunities(from, to);
     const { mutate, isPending: isJoining } = useJoinCommunity();
+    if (!user) return;
     const {
         data: communities_ids,
         error: errorCommunities,
         isPending: isLoadingCommunities,
         refetch: refetchCommunities,
-    } = useGetUserCommunities(user.id);
+    } = useGetUserCommunities(user?.id ?? '');
     const joinedCommunityIds = communities_ids?.map((com) => com.community_id);
     if (isPending)
         return (
