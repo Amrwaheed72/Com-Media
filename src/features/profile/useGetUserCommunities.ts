@@ -1,7 +1,7 @@
 import { getUserTotalLikes } from '@/services/api';
 import { useQuery } from '@tanstack/react-query';
 
-const useGetUserLikes = (user_id: string) => {
+const useGetUserCommunities = (user_id: string) => {
     const { data, isPending, error, refetch } = useQuery({
         queryKey: ['user_likes'],
         queryFn: () => getUserTotalLikes(user_id),
@@ -10,4 +10,4 @@ const useGetUserLikes = (user_id: string) => {
     return { data, isPending, error, refetch };
 };
 
-export default useGetUserLikes;
+export default useGetUserCommunities;

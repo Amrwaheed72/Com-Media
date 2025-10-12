@@ -18,13 +18,13 @@ const ProfileOverview = () => {
         isPending: isLoadingLikes,
         error: errorLikes,
         refetch: refetchLikes,
-    } = useGetUserLikes(user?.id);
+    } = useGetUserLikes(user?.id ?? '');
     const {
         data: dislikes,
         isPending: isLoadingDisLikes,
         error: errorDisLikes,
         refetch: refetchDislikes,
-    } = useGetUserDisLikes(user?.id);
+    } = useGetUserDisLikes(user?.id ?? '');
     return (
         <div>
             <div>

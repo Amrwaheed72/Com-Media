@@ -13,7 +13,7 @@ const UserPosts = () => {
     useEffect(() => {
         if (!user) navigate('/');
     }, []);
-    const { data, isPending, error, refetch } = useGetUserPosts(user?.id);
+    const { data, isPending, error, refetch } = useGetUserPosts(user?.id ?? '');
     if (isPending) {
         return (
             <div className="flex w-full justify-center">
@@ -44,7 +44,7 @@ const UserPosts = () => {
                     </span>
                 </p>
             </div>
-            <div className="mt-12 flex items-center justify-center gap-4">
+            <div className="mt-12 flex items-center justify-center gap-8">
                 {data.data.map((post) => (
                     <PostCard post={post} key={post.id} />
                 ))}

@@ -232,7 +232,7 @@ export const getUserPostsById = async (user_id: string) => {
     return { data, count: count ?? 0 };
 };
 
-export const userTotalLikes = async (user_id: string) => {
+export const getUserTotalLikes = async (user_id: string) => {
     const { data, error, count } = await supabase
         .from('votes')
         .select('*', { count: 'exact' })
@@ -242,7 +242,7 @@ export const userTotalLikes = async (user_id: string) => {
     if (error) throw error;
     return { data, count: count };
 };
-export const userTotalDisLikes = async (user_id: string) => {
+export const getUserTotalDisLikes = async (user_id: string) => {
     const { data, error, count } = await supabase
         .from('votes')
         .select('*', { count: 'exact' })
@@ -252,3 +252,24 @@ export const userTotalDisLikes = async (user_id: string) => {
     if (error) throw error;
     return { data, count: count };
 };
+
+export const joinCommunity = async (user_id: string, community_id: number) => {
+    const { data, error } = await supabase
+        .from('community_members')
+        .insert({ user_id, community_id });
+    if (error) throw error;
+    return data;
+};
+
+export const getUserCommunities = async (user_id: string) => {
+    const { data, error } = await supabase
+        .from('community_members')
+        .select('community_id')
+        .eq('user_id', user_id);
+    if (error) throw error;
+    return data;
+};
+
+// export const useGetUserCommunities = async (user_id:string) => {
+//     const { data, error, count } = await supabase.from('community_members')
+// };
