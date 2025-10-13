@@ -284,8 +284,9 @@ export const getUserCommunities = async (user_id: string) => {
 export const getCommunityNameById = async (community_id: number) => {
     const { data, error } = await supabase
         .from('communities')
-        .select('name')
-        .eq('id', community_id);
+        .select('name,id')
+        .eq('id', community_id)
+        .single()
     if (error) throw error;
     return data;
 };

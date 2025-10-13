@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import type { Post } from './PostsList';
 import useGetVotes from '../post/useGetVotes';
 import { Spinner } from '@/components/ui/spinner';
@@ -23,6 +23,7 @@ interface Props {
 }
 
 const PostCard = ({ post }: Props) => {
+    const navigate = useNavigate();
     const {
         id,
         title,
@@ -54,7 +55,6 @@ const PostCard = ({ post }: Props) => {
     } = useGetComments(id);
     const { data, isPending, refetch, error } =
         useGetCommunityName(community_id);
-    console.log(data);
     if (errorVotes || commentsError)
         return (
             <ErrorFallBack
@@ -97,21 +97,28 @@ const PostCard = ({ post }: Props) => {
                                 </h2>
                                 <ChevronRight className="h-4 w-4" />
                                 {community_id === null ? (
-                                    'public'
+                                    <h2 className="text-sm text-gray-400">
+                                        public
+                                    </h2>
                                 ) : isPending ? (
                                     <Skeleton className="h-4 w-[100px] bg-gray-400" />
                                 ) : (
                                     <ToolTipComponent content="view community">
-                                        <Link to={`/community/${community_id}`}>
-                                            <h2 className="font-semibold text-gray-400 hover:underline">
-                                                Gamers
-                                            </h2>
-                                        </Link>
+                                        <h2
+                                            // onClick={() =>
+                                            //     navigate(
+                                            //         `/community/${community_id}`
+                                            //     )
+                                            // }
+                                            className="text-sm font-semibold text-gray-400 hover:underline"
+                                        >
+                                            {data?.name}
+                                        </h2>
                                     </ToolTipComponent>
                                 )}
                             </div>
                         )}
-                        <div className="flex flex-col gap-1">
+                        <div className="ml-6 flex flex-col gap-1 sm:ml-4">
                             <div className="flex-1 text-[20px] leading-[22px] font-semibold">
                                 {title}
                             </div>
