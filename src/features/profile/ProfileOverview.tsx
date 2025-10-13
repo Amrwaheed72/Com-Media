@@ -7,6 +7,7 @@ import useGetUserDisLikes from './useGetUserDisLikes';
 import { Spinner } from '@/components/ui/spinner';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
+import useGetPosts from '../home/useGetPosts';
 
 const ProfileOverview = () => {
     const { user, isAuthenticated, loading } = useUserAuth();
@@ -28,6 +29,8 @@ const ProfileOverview = () => {
         navigate('/login');
         return null;
     }
+    // const { data, isPending, error, refetch } = useGetPosts(0, 9);
+    // const totalRows = data.count;
     if (loading) {
         return (
             <div className="flex justify-center">

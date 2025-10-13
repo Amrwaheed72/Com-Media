@@ -55,9 +55,11 @@ const CommunityPosts = ({ id }: Props) => {
 
     return (
         <div className="w-full">
-            <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-6xl font-bold text-transparent">
-                {data && data[0].communities?.name} Community Posts
-            </h2>
+            <div className='flex justify-start mb-20'>
+                <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-3xl sm:text-4xl font-bold text-transparent">
+                    {data && data[0].communities?.name} Community Posts
+                </h2>
+            </div>
 
             <motion.div
                 className="flex flex-wrap justify-center gap-6"
@@ -78,7 +80,7 @@ const CommunityPosts = ({ id }: Props) => {
                 </AnimatePresence>
             </motion.div>
 
-            {/* ✅ Pass pagination props */}
+            
             <Paginate
                 page={page}
                 totalPages={totalPages}

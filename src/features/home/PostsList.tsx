@@ -15,6 +15,7 @@ export interface Post {
     created_at: string;
     avatar_url: string;
     community_id: number;
+    user_id:string
 }
 
 const PostsList = () => {

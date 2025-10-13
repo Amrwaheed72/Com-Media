@@ -50,7 +50,7 @@ export const createPost = async ({
 export const getPosts = async (from: number, to: number) => {
     const { data, error, count } = await supabase
         .from('posts')
-        .select('*', { count: 'exact' }) // count = total rows
+        .select('*', { count: 'exact' })
         .range(from, to)
         .order('created_at', { ascending: false });
 
@@ -280,3 +280,12 @@ export const getUserCommunities = async (user_id: string) => {
 // export const useGetUserCommunities = async (user_id:string) => {
 //     const { data, error, count } = await supabase.from('community_members')
 // };
+
+export const getCommunityNameById = async (community_id: number) => {
+    const { data, error } = await supabase
+        .from('communities')
+        .select('name')
+        .eq('id', community_id);
+    if (error) throw error;
+    return data;
+};

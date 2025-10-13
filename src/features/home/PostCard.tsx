@@ -3,37 +3,68 @@ import type { Post } from './PostsList';
 import useGetVotes from '../post/useGetVotes';
 import { Spinner } from '@/components/ui/spinner';
 import ErrorFallBack from '@/ui/ErrorFallBack';
-import { MessageSquare, ThumbsDown, ThumbsUp } from 'lucide-react';
+import {
+    ChevronRight,
+    MessageSquare,
+    ThumbsDown,
+    ThumbsUp,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import useGetComments from '../post/useGetComments';
 import { motion } from 'framer-motion';
+import useGetUserData from '../profile/useGetUserData';
+import { Skeleton } from '@/components/ui/skeleton';
+import useGetCommunityName from './useGetCommunityName';
+import ToolTipComponent from '@/ui/ToolTipComponent';
 
 interface Props {
     post: Post;
 }
 
 const PostCard = ({ post }: Props) => {
-    const { id, title, image_url, avatar_url, created_at } = post;
-    const { data, isPending: isLoadingVotes, error, refetch } = useGetVotes(id);
+    const {
+        id,
+        title,
+        image_url,
+        avatar_url,
+        created_at,
+        user_id,
+        content,
+        community_id,
+    } = post;
+    const {
+        data: userData,
+        isPending: isLoadingUser,
+        error: errorUser,
+        refetch: refetchUser,
+    } = useGetUserData(user_id);
+    const {
+        data: votes,
+        isPending: isLoadingVotes,
+        error: errorVotes,
+        refetch: refetchVotes,
+    } = useGetVotes(id);
 
     const {
         data: comments,
-        isPending,
+        isPending: isLoadingComments,
         error: commentsError,
         refetch: refetchComments,
     } = useGetComments(id);
-
-    if (error || commentsError)
+    const { data, isPending, refetch, error } =
+        useGetCommunityName(community_id);
+    console.log(data);
+    if (errorVotes || commentsError)
         return (
             <ErrorFallBack
                 message="error displaying votes or comments count"
-                onRetry={refetch || refetchComments}
+                onRetry={refetchVotes || refetchComments}
             />
         );
 
-    const likes = data?.filter((like) => like.vote === 1).length || 0;
-    const dislikes = data?.filter((like) => like.vote === -1).length || 0;
+    const likes = votes?.filter((like) => like.vote === 1).length || 0;
+    const dislikes = votes?.filter((like) => like.vote === -1).length || 0;
     const commentsCount = comments?.length;
 
     return (
@@ -46,22 +77,46 @@ const PostCard = ({ post }: Props) => {
             className="group relative"
         >
             <div className="pointer-events-none absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 blur-sm transition duration-300 group-hover:opacity-50" />
-
             <Card className="relative z-10 min-w-[340px] overflow-hidden">
                 <Link to={`/post/${id}`} className="block">
                     <CardContent className="flex flex-col gap-5 p-5 px-8">
-                        <div className="flex items-center gap-2">
-                            {avatar_url ? (
+                        {isLoadingUser ? (
+                            <div className="flex items-center justify-start gap-2">
+                                <Skeleton className="h-10 w-10 rounded-full bg-gray-400" />
+                                <Skeleton className="h-4 w-[170px] bg-gray-400" />
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-start gap-2">
                                 <img
                                     src={avatar_url}
                                     alt={title}
                                     className="h-[35px] w-[35px] rounded-full"
                                 />
-                            ) : (
-                                <div className="h-[35px] w-[35px] rounded-full bg-gradient-to-r from-[#8a2be2] to-[#491f70]" />
-                            )}
+                                <h2 className="font-semibold">
+                                    {userData.full_name}
+                                </h2>
+                                <ChevronRight className="h-4 w-4" />
+                                {community_id === null ? (
+                                    'public'
+                                ) : isPending ? (
+                                    <Skeleton className="h-4 w-[100px] bg-gray-400" />
+                                ) : (
+                                    <ToolTipComponent content="view community">
+                                        <Link to={`/community/${community_id}`}>
+                                            <h2 className="font-semibold text-gray-400 hover:underline">
+                                                Gamers
+                                            </h2>
+                                        </Link>
+                                    </ToolTipComponent>
+                                )}
+                            </div>
+                        )}
+                        <div className="flex flex-col gap-1">
                             <div className="flex-1 text-[20px] leading-[22px] font-semibold">
                                 {title}
+                            </div>
+                            <div className="text-sm text-gray-400">
+                                {content}
                             </div>
                         </div>
 
@@ -73,7 +128,7 @@ const PostCard = ({ post }: Props) => {
                             />
                         </div>
 
-                        {isLoadingVotes && isPending ? (
+                        {isLoadingVotes && isLoadingComments ? (
                             <div className="flex items-center justify-center gap-2">
                                 <Spinner variant="ring" size="sm" />
                             </div>

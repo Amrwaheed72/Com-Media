@@ -74,10 +74,12 @@ const ProfileContent = () => {
     ];
 
     return (
-        <div>
-            <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-4xl font-bold text-transparent">
-                Welcome, {name || 'User'} 👋
-            </h2>
+        <div className="w-full">
+            <div className="flex justify-start">
+                <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-3xl font-bold text-transparent sm:text-4xl">
+                    Welcome, {name || 'User'} 👋
+                </h2>
+            </div>
 
             <div className="mx-auto flex max-w-4xl flex-col items-center rounded-xl border-2 p-4">
                 <div className="relative">

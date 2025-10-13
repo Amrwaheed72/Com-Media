@@ -18,10 +18,11 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useState } from 'react';
 
 const Navbar = () => {
-    const user = useUserAuth((state) => state.user);
-    const signOut = useUserAuth((state) => state.signOut);
+    const [open, setOpen] = useState(false);
+    const { user, signOut } = useUserAuth();
     // const userName = user?.user_metadata.user_name || user?.email;
     const baseLink = 'flex justify-center items-center gap-2 transition-colors';
     const normalLink = `text-gray-600 dark:hover:text-white dark:text-gray-300 hover:text-black ${baseLink}`;
@@ -131,9 +132,9 @@ const Navbar = () => {
                     {/* mobile links */}
                     <div className="flex items-center justify-center gap-2">
                         <div className="flex items-center gap-2 md:hidden">
-                            <DropdownMenu>
+                            <DropdownMenu open={open} onOpenChange={setOpen}>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant={'outline'}>
+                                    <Button onClick={()=>setOpen((prev)=>!prev)} variant={'outline'}>
                                         <Menu />
                                     </Button>
                                 </DropdownMenuTrigger>
@@ -158,6 +159,7 @@ const Navbar = () => {
                                             <NavLink
                                                 className="w-full"
                                                 to={'/create'}
+                                                onClick={()=>setOpen(false)}
                                             >
                                                 Create Post
                                             </NavLink>

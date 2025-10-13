@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const useGetUserLikes = (user_id: string) => {
     const { data, isPending, error, refetch } = useQuery({
-        queryKey: ['user_likes'],
+        queryKey: ['user_likes',user_id],
         queryFn: () => getUserTotalLikes(user_id),
         enabled: !!user_id,
     });
