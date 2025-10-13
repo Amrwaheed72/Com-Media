@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import useGetUserData from './useGetUserData';
 import { Spinner } from '@/components/ui/spinner';
+import { toast } from 'sonner';
+import ErrorFallBack from '@/ui/ErrorFallBack';
 
 const VerifiedBadge = () => (
     <ToolTipComponent content="Verified">
@@ -16,26 +18,30 @@ const VerifiedBadge = () => (
 );
 
 const ProfileContent = () => {
-    const user = useUserAuth((state) => state.user);
+    const { user, isAuthenticated, loading } = useUserAuth();
+    const { data, isPending, error, refetch } = useGetUserData(user?.id ?? '');
+
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (!user) {
-            navigate('/login');
-        }
-    }, [user, navigate]);
-
-    if (!user) {
-        return null;
-    }
-
-    const { data, isPending, error, refetch } = useGetUserData(user.id);
-    if (isPending)
+    if (isPending || loading)
         return (
-            <div className='flex justify-center'>
+            <div className="flex justify-center">
                 <Spinner size="xl" variant="ring" />
             </div>
         );
+    if (!isAuthenticated || !user) {
+        toast('You must login first to view your profile');
+        navigate('/login');
+        return null;
+    }
+    if (error) {
+        return (
+            <ErrorFallBack
+                message="error display the profile content"
+                onRetry={refetch}
+            />
+        );
+    }
 
     const { phone, created_at } = data;
     const {

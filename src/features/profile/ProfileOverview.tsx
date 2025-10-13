@@ -6,13 +6,11 @@ import { FileText, Pencil, ThumbsDown, ThumbsUp, Users } from 'lucide-react';
 import useGetUserDisLikes from './useGetUserDisLikes';
 import { Spinner } from '@/components/ui/spinner';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 const ProfileOverview = () => {
-    const user = useUserAuth((state) => state.user);
+    const { user, isAuthenticated, loading } = useUserAuth();
     const navigate = useNavigate();
-    useEffect(() => {
-        if (!user) navigate('/');
-    }, []);
     const {
         data: likes,
         isPending: isLoadingLikes,
@@ -25,6 +23,18 @@ const ProfileOverview = () => {
         error: errorDisLikes,
         refetch: refetchDislikes,
     } = useGetUserDisLikes(user?.id ?? '');
+    if (!isAuthenticated || !user) {
+        toast('You must login first to see these');
+        navigate('/login');
+        return null;
+    }
+    if (loading) {
+        return (
+            <div className="flex justify-center">
+                <Spinner size="xl" variant="ring" />
+            </div>
+        );
+    }
     return (
         <div>
             <div>

@@ -6,20 +6,23 @@ import { Spinner } from '@/components/ui/spinner';
 import ErrorFallBack from '@/ui/ErrorFallBack';
 import Empty from '@/ui/Empty';
 import PostCard from '../home/PostCard';
+import { toast } from 'sonner';
 
 const UserPosts = () => {
-    const user = useUserAuth((state) => state.user);
+    const { user, isAuthenticated, loading } = useUserAuth();
     const navigate = useNavigate();
-    useEffect(() => {
-        if (!user) navigate('/');
-    }, []);
     const { data, isPending, error, refetch } = useGetUserPosts(user?.id ?? '');
-    if (isPending) {
+    if (loading || isPending) {
         return (
-            <div className="flex w-full justify-center">
-                <Spinner size="lg" variant="ring" />
+            <div className="flex justify-center">
+                <Spinner size="xl" variant="ring" />
             </div>
         );
+    }
+    if (!isAuthenticated || !user) {
+        toast('You must login first to see these');
+        navigate('/login');
+        return null;
     }
     if (error) {
         return (
@@ -38,7 +41,7 @@ const UserPosts = () => {
         <div className="flex flex-col gap-4">
             <div>
                 <p className="text-gray-400">
-                    Total Posts count:{' '}
+                    Total Posts count:
                     <span className="font-semibold">
                         {data?.count ? data?.count : 'no posts'}{' '}
                     </span>

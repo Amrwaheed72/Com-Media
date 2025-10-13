@@ -113,8 +113,28 @@ export const useUserAuth = create<UserAuthType>((set) => ({
 
 let unsubscribe: (() => void) | null = null;
 
-export const initAuthListener = () => {
+export const initAuthListener = async () => {
     if (unsubscribe) return;
+    useUserAuth.setState({ loading: true });
+
+    const {
+        data: { session },
+        error,
+    } = await supabase.auth.getSession();
+    if (error) console.error('Error getting session:', error);
+    if (session?.user) {
+        useUserAuth.setState({
+            user: session.user,
+            loading: false,
+            isAuthenticated: true,
+        });
+    } else {
+        useUserAuth.setState({
+            user: null,
+            loading: false,
+            isAuthenticated: false,
+        });
+    }
 
     const { data: subscription } = supabase.auth.onAuthStateChange(
         (event: AuthChangeEvent, session: Session | null) => {

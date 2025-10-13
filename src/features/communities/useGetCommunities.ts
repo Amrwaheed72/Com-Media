@@ -6,7 +6,6 @@ const useGetCommunities = (from: number, to: number) => {
         queryKey: ['communities', from, to],
         queryFn: () => getAllCommunities(from, to),
         refetchOnWindowFocus: false,
-        // keepPreviousData: true,
     });
 
     return {

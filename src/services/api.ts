@@ -169,10 +169,7 @@ export const createCommunity = async (
     if (error) throw error;
 };
 
-export const getAllCommunities = async (
-    from: number,
-    to: number
-): Promise<{ communities: Community[]; count: number }> => {
+export const getAllCommunities = async (from: number, to: number) => {
     const { data, count, error } = await supabase
         .from('communities')
         .select('*', { count: 'exact' })
@@ -259,6 +256,16 @@ export const joinCommunity = async (user_id: string, community_id: number) => {
         .insert({ user_id, community_id });
     if (error) throw error;
     return data;
+};
+
+export const leaveCommunity = async (user_id: string, community_id: number) => {
+    const { error } = await supabase
+        .from('community_members')
+        .delete()
+        .eq('user_id', user_id)
+        .eq('community_id', community_id);
+    if (error) throw error;
+    return true;
 };
 
 export const getUserCommunities = async (user_id: string) => {
