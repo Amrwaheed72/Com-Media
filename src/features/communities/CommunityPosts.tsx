@@ -27,6 +27,7 @@ export interface Post {
     avatar_url: string;
     community_id: number;
     communities?: { name: string } | null;
+    user_id: string;
 }
 
 const CommunityPosts = ({ id }: Props) => {
@@ -55,8 +56,8 @@ const CommunityPosts = ({ id }: Props) => {
 
     return (
         <div className="w-full">
-            <div className='flex justify-start mb-20'>
-                <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-3xl sm:text-4xl font-bold text-transparent">
+            <div className="mb-20 flex justify-start">
+                <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-3xl font-bold text-transparent sm:text-4xl">
                     {data && data[0].communities?.name} Community Posts
                 </h2>
             </div>
@@ -80,7 +81,6 @@ const CommunityPosts = ({ id }: Props) => {
                 </AnimatePresence>
             </motion.div>
 
-            
             <Paginate
                 page={page}
                 totalPages={totalPages}
