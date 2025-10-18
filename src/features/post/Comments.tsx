@@ -104,18 +104,17 @@ const Comments = ({ postId }: Props) => {
             }
         });
 
-        if (isPending) return <Spinner size="lg" variant="ring" />;
-        if (error)
-            return (
-                <ErrorFallBack
-                    message="error displaying comments"
-                    onRetry={refetch}
-                />
-            );
-
         return roots;
     }, [comments]);
 
+    if (isPending) return <Spinner size="lg" variant="ring" />;
+    if (error)
+        return (
+            <ErrorFallBack
+                message="error displaying comments"
+                onRetry={refetch}
+            />
+        );
     return (
         <div className="mt-6">
             <h3 className="mb-4 text-2xl font-semibold">Comments</h3>
