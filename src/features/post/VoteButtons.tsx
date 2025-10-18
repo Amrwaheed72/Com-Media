@@ -3,7 +3,7 @@ import ErrorFallBack from '@/ui/ErrorFallBack';
 import { useUserAuth } from '@/store/UserAuth';
 import useMakingVotes from './useMakingVotes';
 import useGetVotes from './useGetVotes';
-import { useMemo } from 'react';
+import { useMemo, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import { useLoginDialogStore } from '@/store/LoginDialogStore';

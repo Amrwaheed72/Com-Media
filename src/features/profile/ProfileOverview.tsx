@@ -2,12 +2,10 @@ import { useUserAuth } from '@/store/UserAuth';
 import ReusableInfoCard from '@/ui/ReusableInfoCard';
 import useGetUserLikes from './useGetUserLikes';
 import { useNavigate } from 'react-router';
-import { FileText, Pencil, ThumbsDown, ThumbsUp, Users } from 'lucide-react';
+import { Pencil, ThumbsDown, ThumbsUp, Users } from 'lucide-react';
 import useGetUserDisLikes from './useGetUserDisLikes';
 import { Spinner } from '@/components/ui/spinner';
-import { useEffect } from 'react';
 import { toast } from 'sonner';
-import useGetPosts from '../home/useGetPosts';
 
 const ProfileOverview = () => {
     const { user, isAuthenticated, loading } = useUserAuth();

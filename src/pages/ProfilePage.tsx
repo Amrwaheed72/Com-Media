@@ -1,9 +1,8 @@
 import ProfileContent from '@/features/profile/ProfileContent';
 
-
 const ProfilePage = () => {
     return (
-        <div >
+        <div>
             <ProfileContent />
         </div>
     );
