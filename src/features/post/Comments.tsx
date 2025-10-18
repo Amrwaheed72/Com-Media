@@ -150,9 +150,18 @@ const Comments = ({ postId }: Props) => {
             </Form>
             {/* comments */}
             <div>
-                {commentTree.map((comment, i) => (
-                    <CommentItem key={i} comment={comment} postId={postId} />
-                ))}
+                {commentTree.map(
+                    (
+                        comment: Comment & { children: CommentNode[] },
+                        i: number
+                    ) => (
+                        <CommentItem
+                            key={i}
+                            comment={comment}
+                            postId={postId}
+                        />
+                    )
+                )}
             </div>
         </div>
     );
