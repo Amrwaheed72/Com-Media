@@ -151,6 +151,7 @@ const Navbar = () => {
                                             <NavLink
                                                 className="w-full"
                                                 to={'/'}
+                                                onClick={() => setOpen(false)}
                                             >
                                                 Home
                                             </NavLink>
@@ -176,6 +177,7 @@ const Navbar = () => {
                                             <NavLink
                                                 className="w-full"
                                                 to={'/communities'}
+                                                onClick={() => setOpen(false)}
                                             >
                                                 Communities
                                             </NavLink>
@@ -188,6 +190,7 @@ const Navbar = () => {
                                             <NavLink
                                                 className="w-full"
                                                 to={'/community/create'}
+                                                onClick={() => setOpen(false)}
                                             >
                                                 Create Community
                                             </NavLink>
