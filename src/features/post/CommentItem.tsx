@@ -76,6 +76,7 @@ const CommentItem = ({ comment, postId }: Props) => {
                         src={user?.user_metadata.avatar_url}
                         alt={comment.author}
                         className="h-10 w-10 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700"
+                        loading="lazy"
                     />
                 ) : (
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 text-sm font-bold text-gray-700 dark:bg-gray-600 dark:text-gray-200">
@@ -163,7 +164,7 @@ const CommentItem = ({ comment, postId }: Props) => {
                                         isDirty={form.formState.isDirty}
                                         label="Reply"
                                         message="reply on this comment"
-                                        progress='Replying...'
+                                        progress="Replying..."
                                     />
                                 </div>
                             </form>

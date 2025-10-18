@@ -2,10 +2,11 @@ import { Spinner } from '@/components/ui/spinner';
 import useGetPosts from './useGetPosts';
 import ErrorFallBack from '@/ui/ErrorFallBack';
 import Empty from '@/ui/Empty';
-import PostCard from './PostCard';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import Paginate from '@/ui/Paginate';
+
+const PostCard = lazy(() => import('./PostCard'));
 
 export interface Post {
     id: number;
@@ -15,7 +16,7 @@ export interface Post {
     created_at: string;
     avatar_url: string;
     community_id: number;
-    user_id:string
+    user_id: string;
 }
 
 const PostsList = () => {
@@ -57,7 +58,7 @@ const PostsList = () => {
     return (
         <div className="w-full">
             <motion.div
-                className="flex flex-wrap justify-center gap-6"
+                className="flex flex-wrap justify-center gap-12"
                 initial="hidden"
                 animate="visible"
                 variants={{
@@ -68,7 +69,7 @@ const PostsList = () => {
                     },
                 }}
             >
-                <AnimatePresence>
+                <AnimatePresence >
                     {posts.map((post: Post) => (
                         <PostCard post={post} key={post.id} />
                     ))}

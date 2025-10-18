@@ -5,7 +5,6 @@ const useGetPosts = (from: number, to: number) => {
     const { data, isPending, error, refetch } = useQuery({
         queryKey: ['posts', from, to],
         queryFn: () => getPosts(from, to),
-        
         refetchOnWindowFocus: false,
     });
 

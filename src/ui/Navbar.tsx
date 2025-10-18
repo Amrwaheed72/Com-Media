@@ -85,6 +85,7 @@ const Navbar = () => {
                                                         className="h-8 w-8 rounded-full"
                                                         src={userImage}
                                                         alt="Amr"
+                                                        loading="lazy"
                                                     />
                                                     <AvatarFallback>
                                                         {user?.user_metadata
@@ -134,7 +135,10 @@ const Navbar = () => {
                         <div className="flex items-center gap-2 md:hidden">
                             <DropdownMenu open={open} onOpenChange={setOpen}>
                                 <DropdownMenuTrigger asChild>
-                                    <Button onClick={()=>setOpen((prev)=>!prev)} variant={'outline'}>
+                                    <Button
+                                        onClick={() => setOpen((prev) => !prev)}
+                                        variant={'outline'}
+                                    >
                                         <Menu />
                                     </Button>
                                 </DropdownMenuTrigger>
@@ -159,7 +163,7 @@ const Navbar = () => {
                                             <NavLink
                                                 className="w-full"
                                                 to={'/create'}
-                                                onClick={()=>setOpen(false)}
+                                                onClick={() => setOpen(false)}
                                             >
                                                 Create Post
                                             </NavLink>
@@ -218,6 +222,7 @@ const Navbar = () => {
                                             className="h-8 w-8 rounded-full"
                                             src={userImage}
                                             alt="Amr"
+                                            loading="lazy"
                                         />
                                         <AvatarFallback>
                                             {user?.user_metadata.user_name ??

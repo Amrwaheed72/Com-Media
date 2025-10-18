@@ -84,7 +84,11 @@ const ProfileContent = () => {
             <div className="mx-auto flex max-w-4xl flex-col items-center rounded-xl border-2 p-4">
                 <div className="relative">
                     <Avatar className="h-28 w-28 sm:h-40 sm:w-40">
-                        <AvatarImage src={avatar_url} alt={full_name} />
+                        <AvatarImage
+                            loading="lazy"
+                            src={avatar_url}
+                            alt={full_name}
+                        />
                     </Avatar>
                     <ToolTipComponent content="Active now">
                         <div className="absolute right-2 bottom-2 h-5 w-5 rounded-full border-2 border-white bg-green-400" />

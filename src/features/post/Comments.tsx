@@ -18,6 +18,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import CommentItem from './CommentItem';
 import LoginAlert from '@/ui/LoginAlert';
+import { useMemo } from 'react';
 
 export const commentSchema = z.object({
     content: z.string().min(1, 'a comment must not be empty'),
@@ -82,17 +83,9 @@ const Comments = ({ postId }: Props) => {
             }
         );
     };
+    const commentTree = useMemo(() => {
+        if (!comments) return [];
 
-    if (isPending) return <Spinner size="lg" variant="ring" />;
-    if (error)
-        return (
-            <ErrorFallBack
-                message="error displaying comments"
-                onRetry={refetch}
-            />
-        );
-
-    const buildCommentTree = (comments: Comment[]): CommentNode[] => {
         const map = new Map<number, CommentNode>();
         const roots: CommentNode[] = [];
 
@@ -111,10 +104,17 @@ const Comments = ({ postId }: Props) => {
             }
         });
 
-        return roots;
-    };
+        if (isPending) return <Spinner size="lg" variant="ring" />;
+        if (error)
+            return (
+                <ErrorFallBack
+                    message="error displaying comments"
+                    onRetry={refetch}
+                />
+            );
 
-    const commentTree = comments ? buildCommentTree(comments) : [];
+        return roots;
+    }, [comments]);
 
     return (
         <div className="mt-6">

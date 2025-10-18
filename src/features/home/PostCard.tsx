@@ -17,6 +17,7 @@ import useGetUserData from '../profile/useGetUserData';
 import { Skeleton } from '@/components/ui/skeleton';
 import useGetCommunityName from './useGetCommunityName';
 import ToolTipComponent from '@/ui/ToolTipComponent';
+import { memo, useMemo } from 'react';
 
 interface Props {
     post: Post;
@@ -24,6 +25,9 @@ interface Props {
 
 const PostCard = ({ post }: Props) => {
     const navigate = useNavigate();
+    const PostData = useMemo(() => {
+        return post;
+    }, []);
     const {
         id,
         title,
@@ -77,7 +81,7 @@ const PostCard = ({ post }: Props) => {
             className="group relative"
         >
             <div className="pointer-events-none absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 opacity-0 blur-sm transition duration-300 group-hover:opacity-50" />
-            <Card className="relative z-10 min-w-[340px] overflow-hidden">
+            <Card className="relative z-10 w-[340px] overflow-hidden">
                 <Link to={`/post/${id}`} className="block">
                     <CardContent className="flex flex-col gap-5 p-5 px-8">
                         {isLoadingUser ? (
@@ -90,7 +94,8 @@ const PostCard = ({ post }: Props) => {
                                 <img
                                     src={avatar_url}
                                     alt={title}
-                                    className="h-[35px] w-[35px] rounded-full"
+                                    className="h-[35px] w-[35px] rounded-full object-cover"
+                                    loading="lazy"
                                 />
                                 <h2 className="font-semibold">
                                     {userData.full_name}
@@ -119,10 +124,10 @@ const PostCard = ({ post }: Props) => {
                             </div>
                         )}
                         <div className="ml-6 flex flex-col gap-1 sm:ml-4">
-                            <div className="flex-1 text-[20px] leading-[22px] font-semibold">
+                            <div className="line-clamp-1 text-[20px] font-semibold">
                                 {title}
                             </div>
-                            <div className="text-sm text-gray-400">
+                            <div className="line-clamp-2 text-sm text-gray-400">
                                 {content}
                             </div>
                         </div>
@@ -131,7 +136,8 @@ const PostCard = ({ post }: Props) => {
                             <img
                                 src={image_url}
                                 alt={title}
-                                className="mx-auto max-h-[150px] w-full rounded-[20px] object-cover"
+                                className="mx-auto h-[150px] w-full rounded-[20px] object-cover"
+                                loading="lazy"
                             />
                         </div>
 

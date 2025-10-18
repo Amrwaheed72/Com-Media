@@ -125,16 +125,11 @@ const CommunitiesList = () => {
     };
 
     return (
-        <div className="flex justify-center flex-col items-center w-full space-y-4">
-            <div className='flex justify-start w-full mb-20'>
-                <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-3xl sm:text-4xl font-bold text-transparent">
-                    Communities
-                </h2>
-            </div>
+        <div className="flex w-full flex-col items-center justify-center space-y-4">
             {communities?.map(({ id, name, description, created_at }) => (
                 <div
                     key={id}
-                    className="max-w-5xl relative w-full rounded-lg border p-4 shadow-md transition hover:translate-y-[-2px] hover:shadow-lg"
+                    className="relative w-full max-w-5xl rounded-lg border p-4 shadow-md transition hover:translate-y-[-2px] hover:shadow-lg"
                 >
                     <div className="flex items-center justify-between">
                         <div className="flex flex-col">

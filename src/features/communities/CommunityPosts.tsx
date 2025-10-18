@@ -56,11 +56,11 @@ const CommunityPosts = ({ id }: Props) => {
 
     return (
         <div className="w-full">
-            <div className="mb-20 flex justify-start">
+            {/* <div className="mb-20 flex justify-start">
                 <h2 className="mb-6 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-center text-3xl font-bold text-transparent sm:text-4xl">
                     {data && data[0].communities?.name} Community Posts
                 </h2>
-            </div>
+            </div> */}
 
             <motion.div
                 className="flex flex-wrap justify-center gap-6"

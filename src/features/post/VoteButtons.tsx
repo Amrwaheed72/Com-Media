@@ -5,6 +5,7 @@ import useMakingVotes from './useMakingVotes';
 import useGetVotes from './useGetVotes';
 import Like from './Like';
 import DisLike from './DisLike';
+import { useMemo } from 'react';
 
 export interface Props {
     postId: number;
@@ -37,8 +38,12 @@ const VoteButtons = ({ postId }: Props) => {
             />
         );
 
-    const likes = data?.filter((vote) => vote.vote === 1).length || 0;
-    const dislikes = data?.filter((vote) => vote.vote === -1).length || 0;
+    const likes = useMemo(() => {
+        return data?.filter((vote) => vote.vote === 1).length || 0;
+    }, [data]);
+    const dislikes = useMemo(() => {
+        return data?.filter((vote) => vote.vote === -1).length || 0;
+    }, [data]);
 
     const userVote = data?.find((vote) => vote.user_id === user?.id)?.vote ?? 0;
 

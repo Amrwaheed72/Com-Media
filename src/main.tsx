@@ -18,12 +18,12 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <QueryClientProvider client={queryClient}>
-                <ReactQueryDevtools />
-                <BrowserRouter>
+            <BrowserRouter>
+                <QueryClientProvider client={queryClient}>
+                    <ReactQueryDevtools />
                     <App />
-                </BrowserRouter>
-            </QueryClientProvider>
+                </QueryClientProvider>
+            </BrowserRouter>
         </ThemeProvider>
     </StrictMode>
 );
