@@ -129,7 +129,7 @@ const CommentItem = ({ comment, postId }: Props) => {
                     >
                         {showReply ? 'Cancel' : 'Reply'}
                     </Button>
-                    {/* you could later add: Like, Report, Share buttons here */}
+                   
                 </div>
 
                 {/* Reply Form */}

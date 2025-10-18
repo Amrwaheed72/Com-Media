@@ -57,6 +57,16 @@ const PostCard = ({ post }: Props) => {
         error: commentsError,
         refetch: refetchComments,
     } = useGetComments(id);
+
+    const likes = useMemo(
+        () => votes?.filter((like) => like.vote === 1).length || 0,
+        [votes]
+    );
+    const dislikes = useMemo(
+        () => votes?.filter((like) => like.vote === -1).length || 0,
+        [votes]
+    );
+    const commentsCount = comments?.length;
     const { data, isPending, refetch, error } =
         useGetCommunityName(community_id);
     if (errorVotes || commentsError)
@@ -66,10 +76,6 @@ const PostCard = ({ post }: Props) => {
                 onRetry={refetchVotes || refetchComments}
             />
         );
-
-    const likes = votes?.filter((like) => like.vote === 1).length || 0;
-    const dislikes = votes?.filter((like) => like.vote === -1).length || 0;
-    const commentsCount = comments?.length;
 
     return (
         <motion.div
