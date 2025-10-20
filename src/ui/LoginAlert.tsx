@@ -19,7 +19,6 @@ interface LoginAlertProps {
 }
 
 const LoginAlert: React.FC<LoginAlertProps> = ({ message, children }) => {
-    const { open, setOpen } = useLoginDialogStore();
     const { isAuthenticated } = useUserAuth();
 
     return (

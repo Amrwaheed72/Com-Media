@@ -69,8 +69,10 @@ const CreatePost = () => {
                     form.reset();
                     navigate('/');
                 },
-                onError: (error) => {
-                    throw new Error(error.message);
+                onError: () => {
+                    toast.error(
+                        'something went wrong while creating your post, please try again later'
+                    );
                 },
             }
         );

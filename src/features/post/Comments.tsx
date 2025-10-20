@@ -76,8 +76,8 @@ const Comments = ({ postId }: Props) => {
                     });
                     form.reset();
                 },
-                onError: (error) => {
-                    throw new Error(error.message);
+                onError: () => {
+                    toast.error('Error adding comment, please try again later');
                 },
             }
         );

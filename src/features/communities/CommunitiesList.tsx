@@ -3,7 +3,7 @@ import useGetCommunities from './useGetCommunities';
 import ErrorFallBack from '@/ui/ErrorFallBack';
 import Empty from '@/ui/Empty';
 import Paginate from '@/ui/Paginate';
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router';
 import useJoinCommunity from './useJoinCommunity';
@@ -13,9 +13,8 @@ import useGetUserCommunities from './useGetUserCommunities';
 import { useQueryClient } from '@tanstack/react-query';
 import { LogIn, LogOut, LucideCircleArrowOutUpRight } from 'lucide-react';
 import useLeaveCommunity from './useLeaveCommunity';
-import { useLoginDialogStore } from '@/store/LoginDialogStore';
-import LoginAlert from '@/ui/LoginAlert';
 
+const LoginAlert=lazy(()=>import('@/ui/LoginAlert'))
 export interface Community {
     id: number;
     name: string;
@@ -39,7 +38,6 @@ const CommunitiesList = () => {
         useGetCommunities(from, to);
     const { mutate, isPending: isJoining } = useJoinCommunity();
     const { leave, isLeaving } = useLeaveCommunity();
-    const { open, setOpen } = useLoginDialogStore();
 
     const {
         data: communities_ids,
@@ -117,10 +115,8 @@ const CommunitiesList = () => {
                     });
                     toast(`Left ${name} community successfully`);
                 },
-                onError: () => {
-                    toast.error(
-                        'Failed to leave this community, try again later'
-                    );
+                onError: (error) => {
+                    throw new Error(error.message);
                 },
             }
         );
