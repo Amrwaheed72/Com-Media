@@ -2,7 +2,6 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { useUserAuth } from '@/store/UserAuth';
 import ToolTipComponent from '@/ui/ToolTipComponent';
 import { Check } from 'lucide-react';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import useGetUserData from './useGetUserData';
 import { Spinner } from '@/components/ui/spinner';
@@ -23,17 +22,17 @@ const ProfileContent = () => {
 
     const navigate = useNavigate();
 
+    if (!isAuthenticated || !user) {
+        toast('You must login first to view your profile');
+        navigate('/login');
+        return null;
+    }
     if (isPending || loading)
         return (
             <div className="flex justify-center">
                 <Spinner size="xl" variant="ring" />
             </div>
         );
-    if (!isAuthenticated || !user) {
-        toast('You must login first to view your profile');
-        navigate('/login');
-        return null;
-    }
     if (error) {
         return (
             <ErrorFallBack

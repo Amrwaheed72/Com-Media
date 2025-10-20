@@ -3,10 +3,9 @@ import useGetPosts from './useGetPosts';
 import ErrorFallBack from '@/ui/ErrorFallBack';
 import Empty from '@/ui/Empty';
 import { motion, AnimatePresence } from 'framer-motion';
-import { lazy, useState } from 'react';
+import { useState } from 'react';
 import Paginate from '@/ui/Paginate';
-
-const PostCard = lazy(() => import('./PostCard'));
+import PostCard from './PostCard';
 
 export interface Post {
     id: number;

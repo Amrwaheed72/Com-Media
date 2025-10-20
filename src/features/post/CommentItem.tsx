@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { type Comment, type CommentNode } from './Comments';
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import { useUserAuth } from '@/store/UserAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -19,7 +19,9 @@ import { toast } from 'sonner';
 import { Textarea } from '@/components/ui/textarea';
 import useAddReply from './useAddReply';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import LoginAlert from '@/ui/LoginAlert';
+import { Spinner } from '@/components/ui/spinner';
+
+const LoginAlert = lazy(() => import('@/ui/LoginAlert'));
 
 interface Props {
     comment: Comment & { children: CommentNode[] };
@@ -129,7 +131,6 @@ const CommentItem = ({ comment, postId }: Props) => {
                     >
                         {showReply ? 'Cancel' : 'Reply'}
                     </Button>
-                   
                 </div>
 
                 {/* Reply Form */}
@@ -158,14 +159,29 @@ const CommentItem = ({ comment, postId }: Props) => {
                                     )}
                                 />
                                 <div className="flex justify-end">
-                                    <LoginAlert
-                                        size="sm"
-                                        isCreating={isCreatingReply}
-                                        isDirty={form.formState.isDirty}
-                                        label="Reply"
-                                        message="reply on this comment"
-                                        progress="Replying..."
-                                    />
+                                    <LoginAlert message="reply on this comment">
+                                        <Button
+                                            className="mt-2 cursor-pointer bg-purple-500 hover:bg-purple-600"
+                                            type="submit"
+                                            size={'sm'}
+                                            disabled={
+                                                isCreatingReply ||
+                                                !form.formState.isDirty
+                                            }
+                                        >
+                                            {isCreatingReply ? (
+                                                <>
+                                                    <Spinner
+                                                        variant="ring"
+                                                        size="sm"
+                                                    />{' '}
+                                                    Replying...
+                                                </>
+                                            ) : (
+                                                'Reply'
+                                            )}
+                                        </Button>
+                                    </LoginAlert>
                                 </div>
                             </form>
                         </Form>

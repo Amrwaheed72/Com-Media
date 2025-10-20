@@ -9,7 +9,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import useGetCommunityName from '../home/useGetCommunityName';
 import { ChevronRight } from 'lucide-react';
 import ToolTipComponent from '@/ui/ToolTipComponent';
-import VoteButtonAlert from '@/ui/VoteButtonAlert';
 
 type PostIddd = {
     postId: string;
@@ -100,7 +99,6 @@ const PostDetails = () => {
             </p>
             <VoteButtons postId={numericId} />
             <Comments postId={numericId} />
-            <VoteButtonAlert />
         </div>
     );
 };

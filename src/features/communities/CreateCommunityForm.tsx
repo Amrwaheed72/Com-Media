@@ -15,7 +15,10 @@ import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 import { Textarea } from '@/components/ui/textarea';
-import LoginAlert from '@/ui/LoginAlert';
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
+import { lazy } from 'react';
+const LoginAlert = lazy(() => import('@/ui/LoginAlert'));
 
 const CreateCommunityForm = () => {
     const { mutate, isCreating } = useCreateCommunity();
@@ -94,14 +97,23 @@ const CreateCommunityForm = () => {
                             </FormItem>
                         )}
                     />
-                    <LoginAlert
-                        size={'lg'}
-                        isCreating={isCreating}
-                        isDirty={form.formState.isDirty}
-                        message="create a community"
-                        label="Create Community"
-                        progress="Creating..."
-                    />
+                    <LoginAlert message="create a community">
+                        <Button
+                            className="mt-2 cursor-pointer bg-purple-500 hover:bg-purple-600"
+                            type="submit"
+                            size={'lg'}
+                            disabled={isCreating || !form.formState.isDirty}
+                        >
+                            {isCreating ? (
+                                <>
+                                    <Spinner variant="ring" size="sm" />{' '}
+                                    Creating...
+                                </>
+                            ) : (
+                                'Create Community'
+                            )}
+                        </Button>
+                    </LoginAlert>
                 </form>
             </Form>
         </div>

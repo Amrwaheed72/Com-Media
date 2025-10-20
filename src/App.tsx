@@ -1,29 +1,11 @@
 import { Route, Routes } from 'react-router';
 import { Toaster } from 'sonner';
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, useEffect } from 'react';
 import {
     cleanupAuthListener,
     initAuthListener,
     // useUserAuth,
 } from './store/UserAuth';
-import { Spinner } from './components/ui/spinner';
-// import Layout from './pages/Layout';
-// import HomePage from './pages/HomePage';
-// import CreatePostPage from './pages/CreatePostPage';
-// import SignUpPage from './pages/SignUpPage';
-// import LoginPage from './pages/LoginPage';
-// import PostPage from './pages/PostPage';
-// import AuthLayout from './pages/AuthLayout';
-// import VerifyEmail from './pages/VarifyEmail';
-// import AuthCallback from './pages/AuthCallback';
-// import CommunitiesPage from './pages/CommunitiesPage';
-// import CreateCommunityPage from './pages/CreateCommunityPage';
-// import CommunityPage from './pages/CommunityPage';
-// import ProfilePage from './pages/ProfilePage';
-// import ProfileLayout from './pages/ProfileLayout';
-// import ProfileOverview from './features/profile/ProfileOverview';
-// import UserPosts from './features/profile/UserPosts';
-// import Communities from './features/profile/Communities';
 
 const Layout = lazy(() => import('./pages/Layout'));
 const HomePage = lazy(() => import('./pages/HomePage'));

@@ -14,7 +14,7 @@ import useCreatePost from './useCreatePost';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { lazy, useState } from 'react';
 import { formSchema, type PostInputs } from './formSchema';
 import { useNavigate } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
@@ -28,8 +28,9 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import useGetCommunityName from '../communities/useGetCommunityName';
-import LoginAlert from '@/ui/LoginAlert';
 import ReusableFormField from '@/ui/ReusableFormField';
+
+const LoginAlert = lazy(() => import('@/ui/LoginAlert'));
 
 const CreatePost = () => {
     const user = useUserAuth((state) => state.user);
@@ -252,14 +253,23 @@ const CreatePost = () => {
                             />
                         </div>
                     )}
-                    <LoginAlert
-                        size="lg"
-                        label="Create Post"
-                        isDirty={form.formState.isDirty}
-                        message="to create a post"
-                        isCreating={isCreating}
-                        progress="Creating..."
-                    />
+                    <LoginAlert message="to create a post">
+                        <Button
+                            className="mt-2 cursor-pointer bg-purple-500 hover:bg-purple-600"
+                            type="submit"
+                            size={'lg'}
+                            disabled={isCreating || !form.formState.isDirty}
+                        >
+                            {isCreating ? (
+                                <>
+                                    <Spinner variant="ring" size="sm" />{' '}
+                                    Creating...
+                                </>
+                            ) : (
+                                'Create Post'
+                            )}
+                        </Button>
+                    </LoginAlert>
                 </form>
             </Form>
         </div>

@@ -17,8 +17,9 @@ import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 
 import CommentItem from './CommentItem';
-import LoginAlert from '@/ui/LoginAlert';
-import { useMemo } from 'react';
+import { lazy, useMemo } from 'react';
+import { Button } from '@/components/ui/button';
+const LoginAlert = lazy(() => import('@/ui/LoginAlert'));
 
 export const commentSchema = z.object({
     content: z.string().min(1, 'a comment must not be empty'),
@@ -137,14 +138,25 @@ const Comments = ({ postId }: Props) => {
                             </FormItem>
                         )}
                     />
-                    <LoginAlert
-                        isCreating={isCreatingComment}
-                        isDirty={form.formState.isDirty}
-                        label="Add a Comment"
-                        message="comment on this post"
-                        size="lg"
-                        progress="Adding Comment..."
-                    />
+                    <LoginAlert message="comment on this post">
+                        <Button
+                            className="mt-2 cursor-pointer bg-purple-500 hover:bg-purple-600"
+                            type="submit"
+                            size={'lg'}
+                            disabled={
+                                isCreatingComment || !form.formState.isDirty
+                            }
+                        >
+                            {isCreatingComment ? (
+                                <>
+                                    <Spinner variant="ring" size="sm" /> Adding
+                                    Comment...
+                                </>
+                            ) : (
+                                'Add a Comment'
+                            )}
+                        </Button>
+                    </LoginAlert>
                 </form>
             </Form>
             {/* comments */}

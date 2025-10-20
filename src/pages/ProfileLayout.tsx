@@ -1,5 +1,7 @@
-import ProfileSidebar from '@/ui/ProfileSidebar';
+import { lazy } from 'react';
 import { Outlet } from 'react-router';
+
+const ProfileSidebar = lazy(() => import('@/ui/ProfileSidebar'));
 
 const ProfileLayout = () => {
     return (

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import type { Post } from './PostsList';
 import useGetVotes from '../post/useGetVotes';
 import { Spinner } from '@/components/ui/spinner';
@@ -17,14 +17,13 @@ import useGetUserData from '../profile/useGetUserData';
 import { Skeleton } from '@/components/ui/skeleton';
 import useGetCommunityName from './useGetCommunityName';
 import ToolTipComponent from '@/ui/ToolTipComponent';
-import { memo, useMemo } from 'react';
+import { useMemo } from 'react';
 
 interface Props {
     post: Post;
 }
 
 const PostCard = ({ post }: Props) => {
-    const navigate = useNavigate();
     const PostData = useMemo(() => {
         return post;
     }, []);
@@ -116,11 +115,6 @@ const PostCard = ({ post }: Props) => {
                                 ) : (
                                     <ToolTipComponent content="view community">
                                         <h2
-                                            // onClick={() =>
-                                            //     navigate(
-                                            //         `/community/${community_id}`
-                                            //     )
-                                            // }
                                             className="text-sm font-semibold text-gray-400 hover:underline"
                                         >
                                             {data?.name}
