@@ -49,8 +49,8 @@ const CreateCommunityForm = () => {
                     });
                     navigate('/communities');
                 },
-                onError: () => {
-                    toast.error('error creating community, please try again');
+                onError: (error) => {
+                    throw new Error(error.message);
                 },
             }
         );

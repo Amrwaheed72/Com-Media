@@ -8,9 +8,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import { useLoginDialogStore } from '@/store/LoginDialogStore';
 import { useUserAuth } from '@/store/UserAuth';
 import { Link } from 'react-router';
-
 
 interface LoginAlertProps {
     message: string;
@@ -19,6 +19,7 @@ interface LoginAlertProps {
 }
 
 const LoginAlert: React.FC<LoginAlertProps> = ({ message, children }) => {
+    const { open, setOpen } = useLoginDialogStore();
     const { isAuthenticated } = useUserAuth();
 
     return (

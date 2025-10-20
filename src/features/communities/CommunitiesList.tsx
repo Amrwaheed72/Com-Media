@@ -13,6 +13,8 @@ import useGetUserCommunities from './useGetUserCommunities';
 import { useQueryClient } from '@tanstack/react-query';
 import { LogIn, LogOut, LucideCircleArrowOutUpRight } from 'lucide-react';
 import useLeaveCommunity from './useLeaveCommunity';
+import { useLoginDialogStore } from '@/store/LoginDialogStore';
+import LoginAlert from '@/ui/LoginAlert';
 
 export interface Community {
     id: number;
@@ -37,6 +39,8 @@ const CommunitiesList = () => {
         useGetCommunities(from, to);
     const { mutate, isPending: isJoining } = useJoinCommunity();
     const { leave, isLeaving } = useLeaveCommunity();
+    const { open, setOpen } = useLoginDialogStore();
+
     const {
         data: communities_ids,
         error: errorCommunities,
@@ -76,8 +80,6 @@ const CommunitiesList = () => {
 
     const handleJoinCommunity = (id: number, name: string) => {
         if (!isAuthenticated || !user) {
-            toast('You must login first to see these');
-            navigate('/login');
             return null;
         }
         setJoiningId(id);
@@ -158,20 +160,22 @@ const CommunitiesList = () => {
                                     </Button>
                                 </Link>
                             ) : (
-                                <Button
-                                    onClick={() =>
-                                        handleJoinCommunity(id, name)
-                                    }
-                                    className="w-[80px] bg-purple-600 hover:bg-purple-700"
-                                >
-                                    {isJoining && joiningId === id ? (
-                                        <Spinner size="sm" variant="ring" />
-                                    ) : (
-                                        <>
-                                            Join <LogIn />
-                                        </>
-                                    )}
-                                </Button>
+                                <LoginAlert message="join this community">
+                                    <Button
+                                        onClick={() => {
+                                            handleJoinCommunity(id, name);
+                                        }}
+                                        className="w-[80px] bg-purple-600 hover:bg-purple-700"
+                                    >
+                                        {isJoining && joiningId === id ? (
+                                            <Spinner size="sm" variant="ring" />
+                                        ) : (
+                                            <>
+                                                Join <LogIn />
+                                            </>
+                                        )}
+                                    </Button>
+                                </LoginAlert>
                             )}
                             {joinedCommunityIds?.includes(id) && (
                                 <Button

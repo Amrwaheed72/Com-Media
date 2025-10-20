@@ -60,10 +60,8 @@ const CommentItem = ({ comment, postId }: Props) => {
                     form.reset();
                     setShowReply(false);
                 },
-                onError: (err) => {
-                    toast.error(
-                        err.message || 'Error adding reply, please try again'
-                    );
+                onError: (error) => {
+                    throw new Error(error.message);
                 },
             }
         );
