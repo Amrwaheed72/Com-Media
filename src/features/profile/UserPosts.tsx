@@ -1,7 +1,6 @@
 import { useUserAuth } from '@/store/UserAuth';
 import useGetUserPosts from './useGetUserPosts';
 import { useNavigate } from 'react-router';
-import { useEffect } from 'react';
 import { Spinner } from '@/components/ui/spinner';
 import ErrorFallBack from '@/ui/ErrorFallBack';
 import Empty from '@/ui/Empty';
