@@ -13,13 +13,9 @@ const useAddComment = () => {
     const author =
         user?.user_metadata?.full_name ?? user?.user_metadata?.user_name;
 
-    if (!user?.id || !author)
-        throw new Error('you must be logged in to comment');
-
-    
     const { mutate, isPending } = useMutation({
         mutationFn: ({ comment, postId }: AddCommentProps) =>
-            createComment(comment, postId, user.id, author),
+            createComment(comment, postId, user?.id!, author),
     });
 
     return { mutate, isPending };

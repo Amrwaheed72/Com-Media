@@ -12,14 +12,13 @@ const useAddReply = (parentCommentId: number) => {
     const { user } = useUserAuth();
     const author =
         user?.user_metadata.full_name ?? user?.user_metadata?.user_name;
-    if (!user?.id || !author) throw new Error('Not logged in');
 
     const { mutate, isPending } = useMutation({
         mutationFn: ({ reply, postId }: AddReplyArgs) =>
             createReply(
                 { ...reply, parent_comment_id: parentCommentId },
                 postId,
-                user.id,
+                user?.id!,
                 author
             ),
     });
