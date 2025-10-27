@@ -1,12 +1,10 @@
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { useUserAuth } from '@/store/UserAuth';
 import ToolTipComponent from '@/ui/ToolTipComponent';
 import { Check } from 'lucide-react';
-import { useNavigate } from 'react-router';
 import useGetUserData from './useGetUserData';
 import { Spinner } from '@/components/ui/spinner';
-import { toast } from 'sonner';
 import ErrorFallBack from '@/ui/ErrorFallBack';
+import { useUserAuth } from '@/store/UserAuth';
 
 const VerifiedBadge = () => (
     <ToolTipComponent content="Verified">
@@ -17,17 +15,10 @@ const VerifiedBadge = () => (
 );
 
 const ProfileContent = () => {
-    const { user, isAuthenticated, loading } = useUserAuth();
-    const { data, isPending, error, refetch } = useGetUserData(user?.id ?? '');
+    const { data, isPending, error, refetch } = useGetUserData();
+    const { user } = useUserAuth();
 
-    const navigate = useNavigate();
-
-    if (!isAuthenticated || !user) {
-        toast('You must login first to view your profile');
-        navigate('/login');
-        return null;
-    }
-    if (isPending || loading)
+    if (isPending)
         return (
             <div className="flex justify-center">
                 <Spinner size="xl" variant="ring" />
@@ -51,7 +42,7 @@ const ProfileContent = () => {
         email,
         email_verified,
         phone_verified,
-    } = user.user_metadata || {};
+    } = user?.user_metadata || {};
 
     const creationDate = created_at ? new Date(created_at) : null;
 

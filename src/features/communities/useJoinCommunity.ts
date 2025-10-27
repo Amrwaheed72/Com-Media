@@ -1,4 +1,4 @@
-import { joinCommunity } from '@/services/api';
+import { joinCommunity } from '@/services/apiCommunity';
 import { useMutation } from '@tanstack/react-query';
 
 const useJoinCommunity = () => {

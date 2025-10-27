@@ -1,11 +1,15 @@
-import { getUserTotalLikes } from '@/services/api';
+import { getUserTotalLikes } from '@/services/apiUser';
+import { useUserAuth } from '@/store/UserAuth';
 import { useQuery } from '@tanstack/react-query';
 
-const useGetUserLikes = (user_id: string) => {
+const useGetUserLikes = () => {
+    const { user } = useUserAuth();
+
     const { data, isPending, error, refetch } = useQuery({
-        queryKey: ['user_likes',user_id],
-        queryFn: () => getUserTotalLikes(user_id),
-        enabled: !!user_id,
+        queryKey: ['user_likes', user?.id],
+        queryFn: () => getUserTotalLikes(user?.id!),
+        enabled: !!user?.id,
+        refetchOnWindowFocus: false,
     });
     return { data, isPending, error, refetch };
 };

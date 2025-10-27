@@ -1,4 +1,4 @@
-import { getComments } from '@/services/api';
+import { getComments } from '@/services/apiComments';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetComments = (postId: number) => {

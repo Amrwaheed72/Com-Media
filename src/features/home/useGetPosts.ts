@@ -1,4 +1,4 @@
-import { getPosts } from '@/services/api';
+import { getPosts } from '@/services/apiPosts';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetPosts = (from: number, to: number) => {

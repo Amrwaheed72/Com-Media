@@ -1,7 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { type Comment, type CommentNode } from './Comments';
 import { lazy, useState } from 'react';
-import { useUserAuth } from '@/store/UserAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import {
@@ -20,29 +18,26 @@ import { Textarea } from '@/components/ui/textarea';
 import useAddReply from './useAddReply';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Spinner } from '@/components/ui/spinner';
+import useGetCommentOwner from './useGetCommentOwner';
+import type { CommentItemProps } from '@/types/postTypes';
+import { replySchema } from '@/lib/schemas';
 
 const LoginAlert = lazy(() => import('@/ui/LoginAlert'));
-
-interface Props {
-    comment: Comment & { children: CommentNode[] };
-    postId: number;
-}
-export const replySchema = z.object({
-    content: z.string().min(1, 'a reply must not be empty'),
-});
-
-const CommentItem = ({ comment, postId }: Props) => {
+const CommentItem = ({ comment, postId }: CommentItemProps) => {
     const [showReply, setShowReply] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const queryClient = useQueryClient();
-    const user = useUserAuth((state) => state.user);
+    
     const form = useForm<z.infer<typeof replySchema>>({
         resolver: zodResolver(replySchema),
         defaultValues: { content: '' },
     });
-
+    const { data, isPending, error, refetch } = useGetCommentOwner(
+        comment.user_id
+    );
     const { mutate, isPending: isCreatingReply } = useAddReply(comment.id);
 
+    const commentOwnerInfo = data?.data;
     const onSubmit = (values: z.infer<typeof replySchema>) => {
         mutate(
             {
@@ -58,10 +53,11 @@ const CommentItem = ({ comment, postId }: Props) => {
                         queryKey: ['comments', postId],
                     });
                     form.reset();
-                    setShowReply(false);
                 },
-                onError: () => {
-                    toast.error('Error adding reply, please try again later');
+                onError: (err) => {
+                    toast.error(
+                        err.message || 'Error adding the reply, try again later'
+                    );
                 },
             }
         );
@@ -73,7 +69,7 @@ const CommentItem = ({ comment, postId }: Props) => {
             <div className="flex-shrink-0">
                 {comment.author ? (
                     <img
-                        src={user?.user_metadata.avatar_url}
+                        src={commentOwnerInfo?.user_metadata.avatar_url}
                         alt={comment.author}
                         className="h-10 w-10 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700"
                         loading="lazy"
@@ -163,8 +159,8 @@ const CommentItem = ({ comment, postId }: Props) => {
                                             type="submit"
                                             size={'sm'}
                                             disabled={
-                                                isCreatingReply ||
-                                                !form.formState.isDirty
+                                                !form.formState.isDirty ||
+                                                isCreatingReply
                                             }
                                         >
                                             {isCreatingReply ? (
@@ -172,7 +168,7 @@ const CommentItem = ({ comment, postId }: Props) => {
                                                     <Spinner
                                                         variant="ring"
                                                         size="sm"
-                                                    />{' '}
+                                                    />
                                                     Replying...
                                                 </>
                                             ) : (

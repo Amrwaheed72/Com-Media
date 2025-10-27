@@ -6,17 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Paginate from '@/ui/Paginate';
 import PostCard from './PostCard';
-
-export interface Post {
-    id: number;
-    title: string;
-    image_url: string;
-    content: string;
-    created_at: string;
-    avatar_url: string;
-    community_id: number;
-    user_id: string;
-}
+import type { Post } from '@/types/postTypes';
 
 const PostsList = () => {
     const [page, setPage] = useState(1);

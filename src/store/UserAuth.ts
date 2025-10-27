@@ -144,7 +144,7 @@ export const initAuthListener = async () => {
                     loading: false,
                     isAuthenticated: true,
                 });
-
+                
                 const provider = sessionStorage.getItem('oauth_provider');
                 if (event === 'SIGNED_IN' && provider) {
                     toast.success(`Logged in with ${provider} successfully!`);

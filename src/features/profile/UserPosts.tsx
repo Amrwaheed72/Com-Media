@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 const UserPosts = () => {
     const { user, isAuthenticated, loading } = useUserAuth();
     const navigate = useNavigate();
-    const { data, isPending, error, refetch } = useGetUserPosts(user?.id ?? '');
+    const { data, isPending, error, refetch } = useGetUserPosts();
     if (loading || isPending) {
         return (
             <div className="flex justify-center">

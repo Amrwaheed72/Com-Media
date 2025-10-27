@@ -1,5 +1,5 @@
+import { getAllCommunities } from '@/services/apiCommunity';
 import { useQuery } from '@tanstack/react-query';
-import { getAllCommunities } from '@/services/api';
 
 const useGetCommunities = (from: number, to: number) => {
     const { data, isPending, error, refetch } = useQuery({

@@ -1,6 +1,6 @@
-import { createPost } from '@/services/api';
 import { useMutation } from '@tanstack/react-query';
 import type { PostInputs } from './formSchema';
+import { createPost } from '@/services/apiPosts';
 
 interface CreatePostArgs {
     post: PostInputs;

@@ -1,4 +1,4 @@
-import { getUserCommunities } from '@/services/api';
+import { getUserCommunities } from '@/services/apiUser';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetUserCommunities = (user_id: string) => {

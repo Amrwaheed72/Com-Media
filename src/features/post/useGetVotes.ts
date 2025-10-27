@@ -1,13 +1,11 @@
-import { getVotes } from '@/services/api';
+import { getVotes } from '@/services/apiVotes';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetVotes = (postId: number) => {
-    // const isAuthenticated = useUserAuth((state) => state.isAuthenticated);
     const { data, isPending, error, refetch } = useQuery({
         queryKey: ['votes', postId],
         queryFn: () => getVotes(postId),
         refetchOnWindowFocus: false,
-        // enabled: isAuthenticated,
     });
     return { data, isPending, error, refetch };
 };

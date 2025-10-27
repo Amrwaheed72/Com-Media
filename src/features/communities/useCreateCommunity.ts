@@ -1,4 +1,4 @@
-import { createCommunity } from '@/services/api';
+import { createCommunity } from '@/services/apiCommunity';
 import { useUserAuth } from '@/store/UserAuth';
 import { useMutation } from '@tanstack/react-query';
 

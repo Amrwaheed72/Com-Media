@@ -17,14 +17,13 @@ const PostDetails = () => {
     const { postId } = useParams<PostIddd>();
     const numericId = Number(postId);
     const { data, isPending, error, refetch } = useGetPost(numericId);
-    const user_id = data?.user_id;
 
     const {
         data: userData,
         isPending: isLoadingUser,
         error: errorUser,
         refetch: refetchUser,
-    } = useGetPosterData(user_id);
+    } = useGetPosterData(data?.user_id);
     const {
         data: comName,
         isPending: LoadingCommName,

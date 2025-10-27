@@ -1,26 +1,25 @@
-import { createComment } from '@/services/api';
-import { useUserAuth } from '@/store/UserAuth';
 import { useMutation } from '@tanstack/react-query';
-import type { CommentInput } from './Comments';
+import { createComment } from '@/services/apiComments';
+import { useUserAuth } from '@/store/UserAuth';
+import type { CommentInput } from '@/types/postTypes';
 
-interface AddCommentArgs {
+interface AddCommentProps {
     comment: CommentInput;
     postId: number;
 }
 
 const useAddComment = () => {
-    const user = useUserAuth((state) => state.user);
-    const userId = user?.id;
+    const { user } = useUserAuth();
     const author =
         user?.user_metadata?.full_name ?? user?.user_metadata?.user_name;
 
+    if (!user?.id || !author)
+        throw new Error('you must be logged in to comment');
+
+    
     const { mutate, isPending } = useMutation({
-        mutationFn: ({ comment, postId }: AddCommentArgs) => {
-            if (!userId || !author) {
-                throw new Error('User must be logged in to comment');
-            }
-            return createComment(comment, postId, userId, author);
-        },
+        mutationFn: ({ comment, postId }: AddCommentProps) =>
+            createComment(comment, postId, user.id, author),
     });
 
     return { mutate, isPending };

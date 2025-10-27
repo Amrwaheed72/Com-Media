@@ -17,35 +17,13 @@ import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
 
 import CommentItem from './CommentItem';
-import { lazy, useMemo } from 'react';
+import { lazy } from 'react';
 import { Button } from '@/components/ui/button';
+import type { CommentNode, PostId } from '@/types/postTypes';
+import { commentSchema } from '@/lib/schemas';
 const LoginAlert = lazy(() => import('@/ui/LoginAlert'));
 
-export const commentSchema = z.object({
-    content: z.string().min(1, 'a comment must not be empty'),
-});
-
-interface Props {
-    postId: number;
-}
-
-export interface CommentInput {
-    content: string;
-    parent_comment_id?: number | null;
-}
-
-export interface Comment {
-    id: number;
-    post_id: number;
-    parent_comment_id: number | null;
-    user_id: string;
-    created_at: string;
-    content: string;
-    author: string;
-}
-export type CommentNode = Comment & { children: CommentNode[] };
-
-const Comments = ({ postId }: Props) => {
+const Comments = ({ postId }: PostId) => {
     const { mutate, isPending: isCreatingComment } = useAddComment();
     const {
         data: comments,
@@ -54,6 +32,7 @@ const Comments = ({ postId }: Props) => {
         refetch,
     } = useGetComments(postId);
     const queryClient = useQueryClient();
+
     const form = useForm<z.infer<typeof commentSchema>>({
         resolver: zodResolver(commentSchema),
         defaultValues: { content: '' },
@@ -76,13 +55,17 @@ const Comments = ({ postId }: Props) => {
                     });
                     form.reset();
                 },
-                onError: () => {
-                    toast.error('Error adding comment, please try again later');
+                onError: (error) => {
+                    console.log(error.message);
+                    toast.error(
+                        error.message ||
+                            'Error adding comment, please try again later'
+                    );
                 },
             }
         );
     };
-    const commentTree = useMemo(() => {
+    const commentTree = (() => {
         if (!comments) return [];
 
         const map = new Map<number, CommentNode>();
@@ -104,7 +87,7 @@ const Comments = ({ postId }: Props) => {
         });
 
         return roots;
-    }, [comments]);
+    })();
 
     if (isPending) return <Spinner size="lg" variant="ring" />;
     if (error)

@@ -1,4 +1,4 @@
-import { leaveCommunity } from '@/services/api';
+import { leaveCommunity } from '@/services/apiCommunity';
 import { useMutation } from '@tanstack/react-query';
 
 const useLeaveCommunity = () => {

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCommunityPosts } from '@/services/api';
 import type { Post } from './CommunityPosts';
+import { getCommunityPosts } from '@/services/apiCommunity';
 
 interface CommunityPostsResponse {
     communityPosts: Post[];

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router';
 import { Pencil, ThumbsDown, ThumbsUp, Users } from 'lucide-react';
 import useGetUserDisLikes from './useGetUserDisLikes';
 import { Spinner } from '@/components/ui/spinner';
-import { toast } from 'sonner';
 
 const ProfileOverview = () => {
     const { user, isAuthenticated, loading } = useUserAuth();
@@ -15,18 +14,14 @@ const ProfileOverview = () => {
         isPending: isLoadingLikes,
         error: errorLikes,
         refetch: refetchLikes,
-    } = useGetUserLikes(user?.id ?? '');
+    } = useGetUserLikes();
     const {
         data: dislikes,
         isPending: isLoadingDisLikes,
         error: errorDisLikes,
         refetch: refetchDislikes,
-    } = useGetUserDisLikes(user?.id ?? '');
-    if (!isAuthenticated || !user) {
-        toast('You must login first to see these');
-        navigate('/login');
-        return null;
-    }
+    } = useGetUserDisLikes();
+
     // const { data, isPending, error, refetch } = useGetPosts(0, 9);
     // const totalRows = data.count;
     if (loading) {

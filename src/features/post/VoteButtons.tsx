@@ -3,23 +3,14 @@ import ErrorFallBack from '@/ui/ErrorFallBack';
 import { useUserAuth } from '@/store/UserAuth';
 import useMakingVotes from './useMakingVotes';
 import useGetVotes from './useGetVotes';
-import { lazy, useMemo } from 'react';
+import { lazy } from 'react';
 import { Button } from '@/components/ui/button';
 import { ThumbsDown, ThumbsUp } from 'lucide-react';
+import type { VoteProps } from '@/types/postTypes';
 
 const LoginAlert = lazy(() => import('@/ui/LoginAlert'));
-export interface Props {
-    postId: number;
-}
 
-export interface Vote {
-    id: number;
-    post_id: number;
-    user_id: string;
-    vote: number;
-}
-
-const VoteButtons = ({ postId }: Props) => {
+const VoteButtons = ({ postId }: VoteProps) => {
     const { user } = useUserAuth();
     const { mutate, isPending } = useMakingVotes(postId);
 
@@ -30,16 +21,9 @@ const VoteButtons = ({ postId }: Props) => {
         refetch,
     } = useGetVotes(postId);
 
-    const likes = useMemo(() => {
-        return data?.filter((vote) => vote.vote === 1).length || 0;
-    }, [data]);
-    const dislikes = useMemo(() => {
-        return data?.filter((vote) => vote.vote === -1).length || 0;
-    }, [data]);
-
-    const userVote = useMemo(() => {
-        return data?.find((vote) => vote.user_id === user?.id)?.vote ?? 0;
-    }, [data]);
+    const likes = data?.filter((vote) => vote.vote === 1).length || 0;
+    const dislikes = data?.filter((vote) => vote.vote === -1).length || 0;
+    const userVote = data?.find((vote) => vote.user_id === user?.id)?.vote ?? 0;
 
     if (isLoadingVotes) return <Spinner variant="ring" size="md" />;
     if (error)

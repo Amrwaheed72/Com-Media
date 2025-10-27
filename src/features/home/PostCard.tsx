@@ -1,5 +1,4 @@
 import { Link } from 'react-router';
-import type { Post } from './PostsList';
 import useGetVotes from '../post/useGetVotes';
 import { Spinner } from '@/components/ui/spinner';
 import ErrorFallBack from '@/ui/ErrorFallBack';
@@ -11,22 +10,15 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import useGetComments from '../post/useGetComments';
 import { motion } from 'framer-motion';
 import useGetUserData from '../profile/useGetUserData';
 import { Skeleton } from '@/components/ui/skeleton';
 import useGetCommunityName from './useGetCommunityName';
 import ToolTipComponent from '@/ui/ToolTipComponent';
-import { useMemo } from 'react';
+import type { Post } from '@/types/postTypes';
+import useGetComments from '../post/useGetComments';
 
-interface Props {
-    post: Post;
-}
-
-const PostCard = ({ post }: Props) => {
-    const PostData = useMemo(() => {
-        return post;
-    }, []);
+const PostCard = ({ post }: { post: Post }) => {
     const {
         id,
         title,
@@ -57,17 +49,13 @@ const PostCard = ({ post }: Props) => {
         refetch: refetchComments,
     } = useGetComments(id);
 
-    const likes = useMemo(
-        () => votes?.filter((like) => like.vote === 1).length || 0,
-        [votes]
-    );
-    const dislikes = useMemo(
-        () => votes?.filter((like) => like.vote === -1).length || 0,
-        [votes]
-    );
-    const commentsCount = comments?.length;
     const { data, isPending, refetch, error } =
         useGetCommunityName(community_id);
+    const likes = votes?.filter((like) => like.vote === 1).length || 0;
+
+    const dislikes = votes?.filter((like) => like.vote === -1).length || 0;
+
+    const commentsCount = comments?.length;
     if (errorVotes || commentsError)
         return (
             <ErrorFallBack
@@ -114,9 +102,7 @@ const PostCard = ({ post }: Props) => {
                                     <Skeleton className="h-4 w-[100px] bg-gray-400" />
                                 ) : (
                                     <ToolTipComponent content="view community">
-                                        <h2
-                                            className="text-sm font-semibold text-gray-400 hover:underline"
-                                        >
+                                        <h2 className="text-sm font-semibold text-gray-400 hover:underline">
                                             {data?.name}
                                         </h2>
                                     </ToolTipComponent>

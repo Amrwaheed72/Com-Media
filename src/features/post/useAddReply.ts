@@ -1,7 +1,7 @@
-import { createReply } from '@/services/api';
 import { useUserAuth } from '@/store/UserAuth';
 import { useMutation } from '@tanstack/react-query';
-import type { CommentInput } from './Comments';
+import { createReply } from '@/services/apiComments';
+import type { CommentInput } from '@/types/postTypes';
 
 interface AddReplyArgs {
     reply: CommentInput;
@@ -9,21 +9,19 @@ interface AddReplyArgs {
 }
 
 const useAddReply = (parentCommentId: number) => {
-    const user = useUserAuth((state) => state.user);
-    const userId = user?.id;
+    const { user } = useUserAuth();
     const author =
         user?.user_metadata.full_name ?? user?.user_metadata?.user_name;
+    if (!user?.id || !author) throw new Error('Not logged in');
 
     const { mutate, isPending } = useMutation({
-        mutationFn: async ({ reply, postId }: AddReplyArgs) => {
-            if (!userId || !author) throw new Error('Not logged in');
-            return createReply(
+        mutationFn: ({ reply, postId }: AddReplyArgs) =>
+            createReply(
                 { ...reply, parent_comment_id: parentCommentId },
                 postId,
-                userId,
+                user.id,
                 author
-            );
-        },
+            ),
     });
 
     return { mutate, isPending };
