@@ -34,7 +34,7 @@ const PostCard = ({ post }: { post: Post }) => {
         isPending: isLoadingUser,
         error: errorUser,
         refetch: refetchUser,
-    } = useGetUserData(user_id);
+    } = useGetUserData();
     const {
         data: votes,
         isPending: isLoadingVotes,
