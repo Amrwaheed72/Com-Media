@@ -7,19 +7,15 @@ import useGetUserDisLikes from './useGetUserDisLikes';
 import { Spinner } from '@/components/ui/spinner';
 
 const ProfileOverview = () => {
-    const { user, isAuthenticated, loading } = useUserAuth();
+    const {  loading } = useUserAuth();
     const navigate = useNavigate();
     const {
         data: likes,
         isPending: isLoadingLikes,
-        error: errorLikes,
-        refetch: refetchLikes,
     } = useGetUserLikes();
     const {
         data: dislikes,
         isPending: isLoadingDisLikes,
-        error: errorDisLikes,
-        refetch: refetchDislikes,
     } = useGetUserDisLikes();
 
     // const { data, isPending, error, refetch } = useGetPosts(0, 9);

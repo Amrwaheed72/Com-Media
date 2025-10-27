@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import { formSchema, type FormSchema } from './formSchema';
+import { formSchema, type FormSchema } from '@/lib/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useCreateCommunity from './useCreateCommunity';
 import { toast } from 'sonner';
@@ -40,13 +40,13 @@ const CreateCommunityForm = () => {
             {
                 onSuccess: () => {
                     toast.success('Community Created Successfully!');
-                    form.reset();
                     queryClient.invalidateQueries({
                         queryKey: ['communities'],
                     });
                     queryClient.invalidateQueries({
                         queryKey: ['communities-name'],
                     });
+                    form.reset();
                     navigate('/communities');
                 },
                 onError: () => {

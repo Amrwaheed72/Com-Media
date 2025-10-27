@@ -6,31 +6,9 @@ import ErrorFallBack from '@/ui/ErrorFallBack';
 import Empty from '@/ui/Empty';
 import PostCard from '../home/PostCard';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { CommunityId, Post } from '@/types/communityTypes';
 
-interface Props {
-    id: number;
-}
-
-export interface Community {
-    id: number;
-    name: string;
-    description: string;
-    created_at: string;
-}
-
-export interface Post {
-    id: number;
-    title: string;
-    image_url: string;
-    content: string;
-    created_at: string;
-    avatar_url: string;
-    community_id: number;
-    communities?: { name: string } | null;
-    user_id: string;
-}
-
-const CommunityPosts = ({ id }: Props) => {
+const CommunityPosts = ({ id }: CommunityId) => {
     const [page, setPage] = useState(1);
     const limit = 10;
 

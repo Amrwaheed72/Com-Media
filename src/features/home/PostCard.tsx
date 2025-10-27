@@ -29,12 +29,8 @@ const PostCard = ({ post }: { post: Post }) => {
         content,
         community_id,
     } = post;
-    const {
-        data: userData,
-        isPending: isLoadingUser,
-        error: errorUser,
-        refetch: refetchUser,
-    } = useGetUserData();
+    const { data: userData, isPending: isLoadingUser } =
+        useGetUserData(user_id);
     const {
         data: votes,
         isPending: isLoadingVotes,
@@ -49,8 +45,7 @@ const PostCard = ({ post }: { post: Post }) => {
         refetch: refetchComments,
     } = useGetComments(id);
 
-    const { data, isPending, refetch, error } =
-        useGetCommunityName(community_id);
+    const { data, isPending } = useGetCommunityName(community_id);
     const likes = votes?.filter((like) => like.vote === 1).length || 0;
 
     const dislikes = votes?.filter((like) => like.vote === -1).length || 0;

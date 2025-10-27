@@ -21,22 +21,22 @@ import { Spinner } from '@/components/ui/spinner';
 import useGetCommentOwner from './useGetCommentOwner';
 import type { CommentItemProps } from '@/types/postTypes';
 import { replySchema } from '@/lib/schemas';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const LoginAlert = lazy(() => import('@/ui/LoginAlert'));
 const CommentItem = ({ comment, postId }: CommentItemProps) => {
     const [showReply, setShowReply] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const queryClient = useQueryClient();
-    
+
+    const { data, isPending} = useGetCommentOwner(
+        comment.user_id
+    );
+    const { mutate, isPending: isCreatingReply } = useAddReply(comment.id);
     const form = useForm<z.infer<typeof replySchema>>({
         resolver: zodResolver(replySchema),
         defaultValues: { content: '' },
     });
-    const { data, isPending, error, refetch } = useGetCommentOwner(
-        comment.user_id
-    );
-    const { mutate, isPending: isCreatingReply } = useAddReply(comment.id);
-
     const commentOwnerInfo = data?.data;
     const onSubmit = (values: z.infer<typeof replySchema>) => {
         mutate(
@@ -67,17 +67,17 @@ const CommentItem = ({ comment, postId }: CommentItemProps) => {
         <div className="flex items-start space-x-4 rounded-lg border-2 p-4 shadow-sm transition hover:shadow-md">
             {/* Avatar */}
             <div className="flex-shrink-0">
-                {comment.author ? (
+                {isPending ? (
+                    <div className="flex items-center justify-start gap-2">
+                        <Skeleton className="h-10 w-10 rounded-full bg-gray-400" />
+                    </div>
+                ) : (
                     <img
                         src={commentOwnerInfo?.user_metadata.avatar_url}
                         alt={comment.author}
                         className="h-10 w-10 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-700"
                         loading="lazy"
                     />
-                ) : (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 text-sm font-bold text-gray-700 dark:bg-gray-600 dark:text-gray-200">
-                        {comment.author.charAt(0).toUpperCase()}
-                    </div>
                 )}
             </div>
 
@@ -85,9 +85,15 @@ const CommentItem = ({ comment, postId }: CommentItemProps) => {
             <div className="flex-1">
                 {/* Header */}
                 <div className="mb-1 flex items-center space-x-2">
-                    <span className="font-semibold text-gray-900 dark:text-gray-100">
-                        {comment.author}
-                    </span>
+                    {isPending ? (
+                        <div className="flex items-center justify-start gap-2">
+                            <Skeleton className="h-4 w-[170px] bg-gray-400" />
+                        </div>
+                    ) : (
+                        <span className="font-semibold text-gray-900 dark:text-gray-100">
+                            {comment.author}
+                        </span>
+                    )}
                     <span className="text-xs text-gray-400">·</span>
                     <span className="text-xs text-gray-500 dark:text-gray-400">
                         {new Date(comment.created_at).toLocaleDateString(

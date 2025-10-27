@@ -58,6 +58,7 @@ const PostsList = () => {
                     },
                 }}
             >
+                
                 <AnimatePresence >
                     {posts.map((post: Post) => (
                         <PostCard post={post} key={post.id} />

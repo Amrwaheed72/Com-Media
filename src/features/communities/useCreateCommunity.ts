@@ -8,12 +8,9 @@ interface CreateCommunityInput {
 }
 
 const useCreateCommunity = () => {
-    const { isAuthenticated } = useUserAuth();
     const { mutate, isPending: isCreating } = useMutation({
-        mutationFn: async ({ name, description }: CreateCommunityInput) => {
-            if (!isAuthenticated) throw new Error('Not logged in');
-            return createCommunity(name, description);
-        },
+        mutationFn: ({ name, description }: CreateCommunityInput) =>
+            createCommunity(name, description),
     });
 
     return { mutate, isCreating };

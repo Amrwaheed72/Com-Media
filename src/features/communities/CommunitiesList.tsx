@@ -15,12 +15,6 @@ import { LogIn, LogOut, LucideCircleArrowOutUpRight } from 'lucide-react';
 import useLeaveCommunity from './useLeaveCommunity';
 
 const LoginAlert=lazy(()=>import('@/ui/LoginAlert'))
-export interface Community {
-    id: number;
-    name: string;
-    description: string;
-    created_at: string;
-}
 
 const CommunitiesList = () => {
     const { user, loading, isAuthenticated } = useUserAuth();
@@ -36,14 +30,11 @@ const CommunitiesList = () => {
 
     const { communities, totalCount, isPending, error, refetch } =
         useGetCommunities(from, to);
-    const { mutate, isPending: isJoining } = useJoinCommunity();
+    const { mutate:join, isPending: isJoining } = useJoinCommunity();
     const { leave, isLeaving } = useLeaveCommunity();
 
     const {
         data: communities_ids,
-        error: errorCommunities,
-        isPending: isLoadingCommunities,
-        refetch: refetchCommunities,
     } = useGetUserCommunities(user?.id ?? '');
 
     const joinedCommunityIds = communities_ids?.map((com) => com.community_id);
@@ -81,7 +72,7 @@ const CommunitiesList = () => {
             return null;
         }
         setJoiningId(id);
-        mutate(
+        join(
             { user_id: user.id, community_id: id },
             {
                 onSuccess: () => {

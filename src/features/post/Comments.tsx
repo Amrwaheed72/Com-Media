@@ -57,10 +57,7 @@ const Comments = ({ postId }: PostId) => {
                 },
                 onError: (error) => {
                     console.log(error.message);
-                    toast.error(
-                        error.message ||
-                            'Error adding comment, please try again later'
-                    );
+                    toast.error('Error adding comment, please try again later');
                 },
             }
         );

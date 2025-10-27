@@ -10,11 +10,11 @@ import useGetCommunityName from '../home/useGetCommunityName';
 import { ChevronRight } from 'lucide-react';
 import ToolTipComponent from '@/ui/ToolTipComponent';
 
-type PostIddd = {
+type PostId = {
     postId: string;
 };
 const PostDetails = () => {
-    const { postId } = useParams<PostIddd>();
+    const { postId } = useParams<PostId>();
     const numericId = Number(postId);
     const { data, isPending, error, refetch } = useGetPost(numericId);
 
@@ -27,8 +27,6 @@ const PostDetails = () => {
     const {
         data: comName,
         isPending: LoadingCommName,
-        refetch: RefetchComName,
-        error: ErrorCommName,
     } = useGetCommunityName(data?.community_id);
 
     if (isPending)

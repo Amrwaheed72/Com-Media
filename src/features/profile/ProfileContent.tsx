@@ -15,8 +15,8 @@ const VerifiedBadge = () => (
 );
 
 const ProfileContent = () => {
-    const { data, isPending, error, refetch } = useGetUserData();
     const { user } = useUserAuth();
+    const { data, isPending, error, refetch } = useGetUserData(user?.id!);
 
     if (isPending)
         return (
