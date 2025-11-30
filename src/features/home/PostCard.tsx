@@ -118,7 +118,6 @@ const PostCard = ({ post }: { post: Post }) => {
                                 src={image_url}
                                 alt={title}
                                 className="mx-auto h-[150px] w-full rounded-[20px] object-cover"
-                                loading="lazy"
                             />
                         </div>
 

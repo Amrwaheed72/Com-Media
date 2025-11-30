@@ -1,11 +1,12 @@
 import { Route, Routes } from 'react-router';
 import { Toaster } from 'sonner';
-import { lazy, useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import {
     cleanupAuthListener,
     initAuthListener,
     // useUserAuth,
 } from './store/UserAuth';
+import { Spinner } from './components/ui/spinner';
 
 const Layout = lazy(() => import('./pages/Layout'));
 const HomePage = lazy(() => import('./pages/HomePage'));
@@ -36,36 +37,55 @@ function App() {
     return (
         <div className="min-h-screen bg-gray-100 pt-20 text-gray-900 transition-opacity duration-700 dark:bg-[rgba(10,10,10,0.8)] dark:text-gray-100">
             <Toaster richColors closeButton position="top-right" />
-
-            <Routes>
-                <Route element={<Layout />}>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/create" element={<CreatePostPage />} />
-                    <Route path="/post/:postId" element={<PostPage />} />
-                    <Route
-                        path="/community/create"
-                        element={<CreateCommunityPage />}
-                    />
-                    <Route path="/communities" element={<CommunitiesPage />} />
-                    <Route
-                        path="community/:communityId"
-                        element={<CommunityPage />}
-                    />
-                    <Route path="/profile" element={<ProfileLayout />}>
-                        <Route index element={<ProfilePage />} />
-                        <Route path="overview" element={<ProfileOverview />} />
-                        <Route path="posts" element={<UserPosts />} />
-                        <Route path="communities" element={<Communities />} />
-                        <Route path="settings" />
+            <Suspense
+                fallback={
+                    <div className="flex items-center justify-center">
+                        <Spinner variant="ring" size="xl" />
+                    </div>
+                }
+            >
+                <Routes>
+                    <Route element={<Layout />}>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/create" element={<CreatePostPage />} />
+                        <Route path="/post/:postId" element={<PostPage />} />
+                        <Route
+                            path="/community/create"
+                            element={<CreateCommunityPage />}
+                        />
+                        <Route
+                            path="/communities"
+                            element={<CommunitiesPage />}
+                        />
+                        <Route
+                            path="community/:communityId"
+                            element={<CommunityPage />}
+                        />
+                        <Route path="/profile" element={<ProfileLayout />}>
+                            <Route index element={<ProfilePage />} />
+                            <Route
+                                path="overview"
+                                element={<ProfileOverview />}
+                            />
+                            <Route path="posts" element={<UserPosts />} />
+                            <Route
+                                path="communities"
+                                element={<Communities />}
+                            />
+                            <Route path="settings" />
+                        </Route>
                     </Route>
-                </Route>
-                <Route element={<AuthLayout />}>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/signup" element={<SignUpPage />} />
-                    <Route path="/verify-email" element={<VerifyEmail />} />
-                    <Route path="/auth/callback" element={<AuthCallback />} />
-                </Route>
-            </Routes>
+                    <Route element={<AuthLayout />}>
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/signup" element={<SignUpPage />} />
+                        <Route path="/verify-email" element={<VerifyEmail />} />
+                        <Route
+                            path="/auth/callback"
+                            element={<AuthCallback />}
+                        />
+                    </Route>
+                </Routes>
+            </Suspense>
         </div>
     );
 }
