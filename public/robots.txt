@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# Optional: If you have a sitemap, link it here

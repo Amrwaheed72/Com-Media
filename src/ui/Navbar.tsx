@@ -29,7 +29,7 @@ const Navbar = () => {
     const activeLink = `dark:text-white text-black font-medium ${baseLink}`;
     const userImage = user?.user_metadata.avatar_url;
     return (
-        <nav className="fixed top-0 z-20 w-full border-b bg-white/90 border-white/10 shadow-lg  dark:bg-[rgba(10,10,10,0.8)]">
+        <nav className="fixed top-0 z-20 w-full border-b border-white/10 bg-white/90 shadow-lg dark:bg-[rgba(10,10,10,0.8)]">
             <div className="mx-auto max-w-5xl px-4">
                 <div className="flex h-16 items-center justify-between">
                     <Link to="/" className="font-mono text-xl font-bold">
@@ -103,6 +103,9 @@ const Navbar = () => {
                                                 variant={'outline'}
                                                 onClick={signOut}
                                                 className="cursor-pointer"
+                                                name="logout"
+                                                title="logout"
+                                                aria-label="logout"
                                             >
                                                 <LogOut />
                                             </Button>
@@ -117,6 +120,9 @@ const Navbar = () => {
                                             <Button
                                                 variant={'outline'}
                                                 className="cursor-pointer"
+                                                name="login"
+                                                title="login"
+                                                aria-label="login"
                                             >
                                                 Login <LogIn />
                                             </Button>
@@ -137,6 +143,9 @@ const Navbar = () => {
                                     <Button
                                         onClick={() => setOpen((prev) => !prev)}
                                         variant={'outline'}
+                                        name="Menu"
+                                        title="Menu"
+                                        aria-label="Menu"
                                     >
                                         <Menu />
                                     </Button>
@@ -205,6 +214,9 @@ const Navbar = () => {
                                                         type="button"
                                                         onClick={signOut}
                                                         className="w-full cursor-pointer text-start"
+                                                        name="logout"
+                                                        title="logout"
+                                                        aria-label="logout"
                                                     >
                                                         logout
                                                     </button>
@@ -235,7 +247,12 @@ const Navbar = () => {
                             ) : (
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <Button variant={'outline'}>
+                                        <Button
+                                            variant={'outline'}
+                                            name="login"
+                                            title="login"
+                                            aria-label="login"
+                                        >
                                             <Link to={'/login'}>
                                                 {' '}
                                                 <LogIn />

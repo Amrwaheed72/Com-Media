@@ -117,7 +117,7 @@ const PostCard = ({ post }: { post: Post }) => {
                             <img
                                 src={image_url}
                                 alt={title}
-                                className="mx-auto h-[150px] w-full rounded-[20px] object-cover"
+                                className="mx-auto aspect-video h-[150px] w-full rounded-[20px] object-cover"
                             />
                         </div>
 

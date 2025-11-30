@@ -19,6 +19,9 @@ export function ModeToggle() {
                         setTheme(theme === 'light' ? 'dark' : 'light')
                     }
                     className="cursor-pointer"
+                    name="theme toggle"
+                    title={`change to ${theme === 'dark' ? 'light' : 'dark'}`}
+                    aria-label="theme toggle"
                 >
                     {theme === 'light' ? <Sun /> : <Moon />}
                 </Button>
