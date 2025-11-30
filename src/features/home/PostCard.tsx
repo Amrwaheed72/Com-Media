@@ -83,7 +83,6 @@ const PostCard = ({ post }: { post: Post }) => {
                                     src={avatar_url}
                                     alt={title}
                                     className="h-[35px] w-[35px] rounded-full object-cover"
-                                    loading="lazy"
                                 />
                                 <h2 className="font-semibold">
                                     {userData.full_name}
