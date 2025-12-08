@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import { visualizer } from 'rollup-plugin-visualizer';
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,6 +16,10 @@ export default defineConfig({
             babel: {
                 plugins: [['babel-plugin-react-compiler', { debug: true }]],
             },
+        }),
+        ViteImageOptimizer({
+            webp: { quality: 80 },
+            avif: { quality: 70 },
         }),
         tailwindcss(),
         visualizer({ open: true }),
