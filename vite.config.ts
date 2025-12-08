@@ -22,7 +22,6 @@ export default defineConfig({
             algorithm: 'brotliCompress',
             ext: '.br',
             threshold: 1024,
-            filter: /\.(ts|tsx|css|html|svg|json)$/,
             deleteOriginFile: false,
         }),
     ],
