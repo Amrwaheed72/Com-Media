@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import { visualizer } from "rollup-plugin-visualizer";
+import { visualizer } from 'rollup-plugin-visualizer';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -22,6 +22,7 @@ export default defineConfig({
             algorithm: 'brotliCompress',
             ext: '.br',
             threshold: 1024,
+            filter: /\.(ts|tsx|css|html|svg|json)$/,
             deleteOriginFile: false,
         }),
     ],
